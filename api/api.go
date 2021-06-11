@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	myjwt "jwtDemo/middleware/jwt"
 	"jwtDemo/model"
 	"log"
@@ -121,3 +122,36 @@ func GetDataByTime(c *gin.Context) {
 		})
 	}
 }
+
+// 刷新token
+func Refresh(c *gin.Context) {
+	token := c.Request.Header.Get("token")
+	if token == "" {
+		c.JSON(http.StatusOK, gin.H{
+			"status": -1,
+			"msg":    "请求未携带token，无权限访问",
+		})
+		c.Abort()
+		return
+	}
+	j := &myjwt.JWT{
+		[]byte("newtrekWang"),
+	}
+	fmt.Println(token)
+	//刷新token
+	tokens, err := j.RefreshToken(token)
+	if err != nil {
+		fmt.Println(err)
+		c.JSON(http.StatusOK, gin.H{
+			"status": -1,
+			"msg":    err,
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": 1,
+		"data":   tokens,
+	})
+}
+

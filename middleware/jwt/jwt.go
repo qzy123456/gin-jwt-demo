@@ -129,7 +129,18 @@ func (j *JWT) RefreshToken(tokenString string) (string, error) {
 		return j.SigningKey, nil
 	})
 	if err != nil {
-		return "", err
+		if ve, ok := err.(*jwt.ValidationError); ok {
+			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
+				return "", TokenMalformed
+			} else if ve.Errors&jwt.ValidationErrorExpired != 0 {
+				// Token is expired
+				return "", TokenExpired
+			} else if ve.Errors&jwt.ValidationErrorNotValidYet != 0 {
+				return "", TokenNotValidYet
+			} else {
+				return "", TokenInvalid
+			}
+		}
 	}
 	if claims, ok := token.Claims.(*CustomClaims); ok && token.Valid {
 		jwt.TimeFunc = time.Now
