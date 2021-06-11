@@ -11,7 +11,7 @@ func main() {
 	r := gin.Default()
 	r.POST("/login", api.Login)
 	r.POST("/register", api.RegisterUser)
-	//r.POST("/refresh", api.Refresh) //刷新touken
+	r.POST("/refresh", api.Refresh) //刷新touken
 
 	taR := r.Group("/data")
 	taR.Use(jwt.JWTAuth())
