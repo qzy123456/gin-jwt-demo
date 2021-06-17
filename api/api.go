@@ -74,7 +74,7 @@ func Login(c *gin.Context) {
 // 生成令牌
 func generateToken(c *gin.Context, user model.User) {
 	j := &myjwt.JWT{
-		[]byte("newtrekWang"),
+		SigningKey: []byte("newtrekWang"),
 	}
 	claims := myjwt.CustomClaims{
 		user.Id,
@@ -134,14 +134,12 @@ func Refresh(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	j := &myjwt.JWT{
-		[]byte("newtrekWang"),
-	}
-	fmt.Println(token)
+	j :=  myjwt.NewJWT()
+	//fmt.Println(token)
 	//刷新token
 	tokens, err := j.RefreshToken(token)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("验证失败",err)
 		c.JSON(http.StatusOK, gin.H{
 			"status": -1,
 			"msg":    err,
