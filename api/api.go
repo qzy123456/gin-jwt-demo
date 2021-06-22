@@ -77,9 +77,9 @@ func generateToken(c *gin.Context, user model.User) {
 		SigningKey: []byte("newtrekWang"),
 	}
 	claims := myjwt.CustomClaims{
-		user.Id,
-		user.Name,
-		user.Phone,
+		user.UserId,
+		user.Username,
+		user.Password,
 		jwtgo.StandardClaims{
 			NotBefore: int64(time.Now().Unix() - 1000), // 签名生效时间
 			ExpiresAt: int64(time.Now().Unix() + 3600), // 过期时间 一小时

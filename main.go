@@ -19,5 +19,8 @@ func main() {
 	{
 		taR.GET("/dataByTime", api.GetDataByTime)
 	}
+
+	r.POST("/allUser", api.FindAllUser)
+	r.POST("/getMenuById", api.FindMenuById)
 	r.Run(":8080")
 }
