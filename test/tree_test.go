@@ -1,16 +1,12 @@
 package tests
 
 import (
-"fmt"
-"encoding/json"
+	"fmt"
+	"encoding/json"
+	"testing"
 )
 
-type dept struct {
-	DeptId string `json:"deptId"`
-	FrameDeptStr string `json:"frameDeptStr"`
-	Child []*dept `json:"child"`
-}
-func main() {
+func TestMakeTree(t *testing.T)  {
 	depts := make([]dept,0)
 	var a dept
 	a.DeptId = "1"
@@ -43,43 +39,14 @@ func main() {
 		a = &depts[i]
 		pdepts = append(pdepts,a)
 	}
+	//获取了根上的科室
+	fmt.Println("根上的科室有:",deptRoots)
+
 
 	var node *dept
 	node = &depts[0]
 	MakeTree(pdepts,node)
+	fmt.Println("the result we got is",pdepts)
 	data, _ := json.Marshal(node)
 	fmt.Printf("%s", data)
-
-}
-
-func has(v1 dept,vs []*dept) bool  {
-	var has bool
-	has = false
-	for _,v2 := range vs {
-		v3 := *v2
-		if v1.FrameDeptStr+v1.DeptId == v3.FrameDeptStr{
-			has = true
-			break
-		}
-	}
-	return has
-}
-
-func MakeTree(vs []*dept,node *dept) {
-	childs := findChild(node,vs)
-	for _,child := range childs{
-		node.Child = append(node.Child,child)
-		if has(*child,vs) {
-			MakeTree(vs,child)
-		}
-	}
-}
-
-func findChild(v *dept,vs []*dept)(ret []*dept)  {
-	for _,v2 := range vs{
-		if v.FrameDeptStr+v.DeptId == v2.FrameDeptStr{
-			ret= append(ret,v2)
-		}
-	}
-	return
 }
