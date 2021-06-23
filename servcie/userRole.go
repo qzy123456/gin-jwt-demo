@@ -58,3 +58,22 @@ func GetAllPerm(ids []int)([]*model.Tree) {
 	return treeList
 }
 
+//通过菜单id，拼接成递归样式(这种可以)
+func GetAllPerm4(id int,ids []int)([]*model.Tree) {
+	var menu []*model.Menu
+	//得到所有的0，也就是根节点
+	menu = MenuById(id,ids)
+	fmt.Println("menu",menu)
+	treeList := []*model.Tree{}
+	for _, v := range menu { // 循环所有父菜单
+		node := &model.Tree{ // 拼装父菜单数据
+			RoleId:v.MenuId,
+			MenuId:v.MenuId,
+			MenuName:v.Menuname,
+			MenuUrl:v.MenuUrl,
+		}
+		node.Children = GetAllPerm4(v.MenuId,ids)
+		treeList = append(treeList, node)
+	}
+	return treeList
+}
