@@ -7,6 +7,7 @@ type UserRole struct {
 	RoleId int ` json:"role_id"`
 	Role  Role 	`xorm:"extends"`	//角色
 	RoleMenu RoleMenu `xorm:"extends"`  //菜单
+	Menu Menu `xorm:"extends"`
 }
 
 type Tree struct {
@@ -14,7 +15,7 @@ type Tree struct {
 	MenuId  int    `json:"menu_id"`
 	MenuName string `json:"menu_name"`
 	MenuUrl string `json:"menu_url"`
-	Children []*Tree `json:"children"`
+	Children []Tree `json:"children"`
 }
 
 func (UserRole) TableName()string  {
