@@ -2,31 +2,32 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	"jwtDemo/api"
 	"jwtDemo/middleware/jwt"
+	"jwtDemo/servcie"
 	"net/http"
 )
 
-func InitRouters() *gin.Engine {
-
+var GlobalService  *servcie.Service
+func InitRouters(srv *servcie.Service) *gin.Engine {
+	GlobalService = srv
 	r := gin.Default()
 
 	//配置加载静态文件夹，用于显示远程图片
 	r.StaticFS("/upload", http.Dir("./upload"))
-	r.POST("/login", api.Login)
-	r.POST("/register", api.RegisterUser)
-	r.POST("/refresh", api.Refresh) //刷新touken
+	r.POST("/login", Login)
+	r.POST("/register", RegisterUser)
+	r.POST("/refresh", Refresh) //刷新touken
 	//上传文件
-	r.POST("/file-upload", api.Upload)
-	r.POST("/file-uploads", api.Uploads)
+	r.POST("/file-upload", Upload)
+	r.POST("/file-uploads", Uploads)
 	taR := r.Group("/data")
 	taR.Use(jwt.JWTAuth())
 	{
-		taR.GET("/dataByTime", api.GetDataByTime)
+		taR.GET("/dataByTime", GetDataByTime)
 	}
 
-	r.POST("/allUser", api.FindAllUser)
-	r.POST("/getMenuById", api.FindMenuById)
+	r.POST("/allUser", FindAllUser)
+	r.POST("/getMenuById", FindMenuById)
 
 	return r
 }

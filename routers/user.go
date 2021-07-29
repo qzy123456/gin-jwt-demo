@@ -1,4 +1,4 @@
-package api
+package routers
 
 import (
 	"github.com/gin-gonic/gin"
@@ -11,7 +11,7 @@ func FindAllUser(c *gin.Context)  {
 	c.JSON(http.StatusOK, gin.H{
 		"status": 0,
 		"msg":    "注册成功！",
-		"data":servcie.FindAllUser(),
+		"data":GlobalService.FindAllUser(),
 	})
 }
 

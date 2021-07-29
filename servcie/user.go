@@ -1,13 +1,15 @@
 package servcie
 
 import (
-	"jwtDemo/initialize"
-	"jwtDemo/model"
+"fmt"
+"jwtDemo/model"
 )
 
-func FindAllUser()[]model.User  {
+func (s *Service) FindAllUser() []model.User {
 	var users []model.User
-	initialize.Gorm().Find(&users)
+	err := s.dao.Db.Find(&users)
+	if err != nil {
+		fmt.Println(err)
+	}
 	return users
 }
-

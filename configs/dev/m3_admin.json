@@ -1,0 +1,39 @@
+{
+  "app": {
+    "GlobalCachePrefix": "douyin_lite:"
+  },
+  "server": {
+    "RunMode": "release",
+    "HttpPort": "8888"
+  },
+  "log": {
+    "Path": "runtime/logs/",
+    "FilePrefix": "log.%Y%m%d",
+    "RotationTime": 86400
+  },
+  "db": {
+    "Dsn": [
+      "root:root@tcp(127.0.0.1:3306)/db_rbac?charset=utf8",
+      "root:root@tcp(127.0.0.1:3306)/db_rbac?charset=utf8"
+    ]
+  },
+  "redis": {
+    "Global": {
+      "Host": "127.0.0.1:6379",
+      "Password": "",
+      "Db": 8,
+      "MaxIdle": 30,
+      "MaxActive": 30,
+      "IdleTimeout": 300
+    },
+    "UserCluster": {
+      "Host": "127.0.0.1:6379",
+      "Password": "",
+      "Db": 8,
+      "MaxIdle": 30,
+      "MaxActive": 30,
+      "IdleTimeout": 300
+    }
+  }
+}
+

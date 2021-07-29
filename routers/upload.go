@@ -1,4 +1,4 @@
-package api
+package routers
 
 import (
 	"fmt"
@@ -8,6 +8,7 @@ import (
 	"path"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -24,6 +25,14 @@ func Upload(ctx *gin.Context) {
 			"data":    data,
 		})
 	} else {
+		fileExt := strings.ToLower(path.Ext(file.Filename))
+		if fileExt != ".png" && fileExt != ".jpg" && fileExt != ".gif" && fileExt != ".jpeg" {
+			ctx.JSON(200, gin.H{
+				"code": 400,
+				"msg":  "上传失败!只允许png,jpg,gif,jpeg文件",
+			})
+			return
+		}
 		fmt.Println("接收的数据", file.Filename)
 		//获取文件名称
 		fmt.Println(file.Filename)
@@ -57,6 +66,14 @@ func Uploads(ctx *gin.Context) {
 		files := form.File["file"]
 		//2.循环全部的文件
 		for k, file := range files {
+			fileExt := strings.ToLower(path.Ext(file.Filename))
+			if fileExt != ".png" && fileExt != ".jpg" && fileExt != ".gif" && fileExt != ".jpeg" {
+				ctx.JSON(200, gin.H{
+					"code": 400,
+					"msg":  "上传失败!只允许png,jpg,gif,jpeg文件",
+				})
+				return
+			}
 			// 3.根据时间鹾生成文件名
 			fileNameInt := time.Now().Unix()
 			fileNameStr := strconv.FormatInt(fileNameInt, 10)
