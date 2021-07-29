@@ -2,17 +2,16 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
+	"jwtDemo/consts"
 	"jwtDemo/servcie"
+	"jwtDemo/tools"
 	"net/http"
 )
 
 
 func FindAllUser(c *gin.Context)  {
-	c.JSON(http.StatusOK, gin.H{
-		"status": 0,
-		"msg":    "注册成功！",
-		"data":GlobalService.FindAllUser(),
-	})
+	response := tools.Gin{C: c}
+	response.Response(http.StatusOK,consts.SUCCESS,GlobalService.FindAllUser())
 }
 
 func FindMenuById(c *gin.Context)  {
