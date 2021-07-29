@@ -29,6 +29,7 @@ type Server struct {
 	HttpPort     int
 	ReadTimeout  int64
 	WriteTimeout int64
+	Address      string
 }
 
 type Redis struct {

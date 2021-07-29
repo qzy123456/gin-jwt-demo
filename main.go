@@ -2,11 +2,14 @@ package main
 
 import (
 	"context"
+	"github.com/fvbock/endless"
 	"flag"
 	"fmt"
 	"jwtDemo/conf"
 	"jwtDemo/routers"
 	"jwtDemo/servcie"
+	"log"
+	"syscall"
 )
 
 func main() {
@@ -22,5 +25,19 @@ func main() {
 		panic(err)
 	}
 	r := routers.InitRouters(svc)
-	_ = r.Run(":8080")
+	/*
+	启动服务器
+	*/
+	address := fmt.Sprintf("%s:%d", svc.Conf.Server.Address, svc.Conf.Server.HttpPort)
+	server := endless.NewServer(address, r)
+	server.BeforeBegin = func(add string) {
+		log.Printf("Actual pid is %d", syscall.Getpid())
+	}
+	log.Printf("ListenAndServer At: %s", address)
+	// 处理服务器错误
+	err := server.ListenAndServe()
+	if err != nil {
+		log.Printf("Server err: %v", err)
+	}
+
 }
