@@ -13,6 +13,7 @@
     "RotationTime": 86400
   },
   "db": {
+    "Debug": true,
     "Dsn": [
       "root:root@tcp(127.0.0.1:3306)/db_rbac?charset=utf8",
       "root:root@tcp(127.0.0.1:3306)/db_rbac?charset=utf8"

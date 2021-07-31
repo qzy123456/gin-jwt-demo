@@ -9,6 +9,7 @@ import (
 
 type Config struct {
 	Dsn          []string
+	Debug        bool
 }
 
 // NewMySQL new db and retry connection when has error.
@@ -24,6 +25,9 @@ func NewMySQL(c *Config) (engine *xorm.EngineGroup) {
 		fmt.Println(err)
 		return
 	}
-
+	//是否打印sql语句
+	if c.Debug{
+		engine.ShowSQL(true)
+	}
 	return engine
 }
