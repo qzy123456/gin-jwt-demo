@@ -2,7 +2,7 @@
 
 //+build linux
 
-package tools
+package utils
 
 import (
 	"log"

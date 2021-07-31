@@ -1,4 +1,4 @@
-package tools
+package utils
 
 func BinarySearch(nums []int, target int) int {
 	left := 0

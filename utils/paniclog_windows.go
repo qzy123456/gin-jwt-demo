@@ -6,7 +6,7 @@
 
 //+build windows
 
-package tools
+package utils
 
 import (
 	"log"

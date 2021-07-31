@@ -1,5 +1,5 @@
 // stringutil 包含有用于处理字符串的工具函数。
-package tools
+package utils
 
 import (
 	"fmt"

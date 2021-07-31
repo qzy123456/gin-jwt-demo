@@ -74,7 +74,7 @@ func Login(c *gin.Context) {
 // 生成令牌
 func generateToken(c *gin.Context, user model.User) {
 	j := &myjwt.JWT{
-		SigningKey: []byte("newtrekWang"),
+		SigningKey: []byte(myjwt.SignKey),
 	}
 	claims := myjwt.CustomClaims{
 		user.UserId,
@@ -82,8 +82,8 @@ func generateToken(c *gin.Context, user model.User) {
 		user.Password,
 		jwtgo.StandardClaims{
 			NotBefore: int64(time.Now().Unix() - 1000), // 签名生效时间
-			ExpiresAt: int64(time.Now().Unix() + 3600), // 过期时间 一小时
-			Issuer:    "newtrekWang",                   //签名的发行者
+			ExpiresAt: int64(time.Now().Unix() + 86400), // 过期时间 一小时
+			Issuer:    myjwt.SignKey,                   //签名的发行者
 		},
 	}
 

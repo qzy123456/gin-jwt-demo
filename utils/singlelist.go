@@ -1,4 +1,4 @@
-package tools
+package utils
 
 // 单链表节点的结构
 type ListNode struct {
