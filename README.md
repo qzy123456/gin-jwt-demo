@@ -3,7 +3,7 @@ gin基于JWT实现token令牌功能demo
 
 
 ### 验证功能
-#### 注册
+####  注册
 ![注册用户](http://img.newtrekwang.me/201818181648-Y.png)
 
 #### 登录
