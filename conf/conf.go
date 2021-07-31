@@ -12,7 +12,7 @@ import (
 
 const (
 	_localConfPath    = "configs/dev"
-	_localConf        = "m3_admin.json"
+	_localConf        = "config.json"
 )
 
 var (
@@ -40,7 +40,7 @@ type Redis struct {
 
 
 type Config struct {
-	// m3_admin.json
+	// config.json
 	App      *App
 	Server   *Server
 	Log      *xlog.Config
