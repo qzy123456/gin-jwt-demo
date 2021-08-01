@@ -14,6 +14,8 @@
   },
   "db": {
     "Debug": true,
+    "MaxId":10,
+    "MaxOpen": 20,
     "Dsn": [
       "root:root@tcp(127.0.0.1:3306)/db_rbac?charset=utf8",
       "root:root@tcp(127.0.0.1:3306)/db_rbac?charset=utf8"

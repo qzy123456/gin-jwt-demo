@@ -10,6 +10,8 @@ import (
 type Config struct {
 	Dsn          []string
 	Debug        bool
+	MaxId  		 int
+	MaxOpen      int
 }
 
 // NewMySQL new db and retry connection when has error.
@@ -29,5 +31,9 @@ func NewMySQL(c *Config) (engine *xorm.EngineGroup) {
 	if c.Debug{
 		engine.ShowSQL(true)
 	}
+	//最大空闲连接数
+	engine.SetMaxIdleConns(c.MaxId)
+	//最大打开连接数
+	engine.SetMaxOpenConns(c.MaxOpen)
 	return engine
 }
