@@ -14,7 +14,6 @@ type Service struct {
 	log           *logrus.Logger
 	RequestLogger *logrus.Logger
 	HttpLogger    *logrus.Logger
-	clientLogger  *logrus.Logger
 }
 
 func New(c *conf.Config) (s *Service) {
@@ -22,7 +21,6 @@ func New(c *conf.Config) (s *Service) {
 		Conf:          c,
 		dao:           dao.New(c),
 		log:           xlog.Init(c.Log, "business"),
-		clientLogger:  xlog.Init(c.Log, "collect"),
 		RequestLogger: xlog.Init(c.Log, "request"),
 		HttpLogger:    xlog.Init(c.Log, "http"),
 	}
