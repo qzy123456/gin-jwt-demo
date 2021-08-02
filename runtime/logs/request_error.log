@@ -1,1 +1,0 @@
-{"@timestamp":"2021-08-02T13:52:03+08:00","agent":"PostmanRuntime/7.26.8","body":"","error":"unexpected end of JSON input","ip":"127.0.0.1","logLevel":"error","method":"POST","msg":"OperationRecord [json.Unmarshal] middleware err","path":"/allUser"}
