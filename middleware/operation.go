@@ -70,6 +70,15 @@ func (m *Middleware) OperationRecord() gin.HandlerFunc {
 			"latency":       latency,
 			"response":      writer.body.String(),
 		}).Info("OperationRecord")
+		//存储到数据库
+		m.Service.SaveOperation(model.Operation{
+			Ip:c.ClientIP(),
+			Method:c.Request.Method,
+			Path :c.Request.URL.Path,
+			Body : string(body),
+			Response: writer.body.String(),
+			CreateTime :time.Now().Unix(),
+		})
 	}
 }
 

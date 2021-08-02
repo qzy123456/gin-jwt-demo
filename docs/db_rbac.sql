@@ -162,3 +162,14 @@ INSERT INTO `tbl_user_role` VALUES (2, 2);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+CREATE TABLE `operation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(60) DEFAULT '',
+  `method` varchar(10) DEFAULT '',
+  `path` varchar(64) DEFAULT '',
+  `body` varchar(255) DEFAULT '',
+  `response` varchar(255) DEFAULT '',
+  `createTime` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
