@@ -169,7 +169,7 @@ CREATE TABLE `operation` (
   `method` varchar(10) DEFAULT '',
   `path` varchar(64) DEFAULT '',
   `body` varchar(255) DEFAULT '',
-  `response` varchar(255) DEFAULT '',
+  `response` varchar(1024) DEFAULT '',
   `createTime` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
