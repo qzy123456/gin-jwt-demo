@@ -18,6 +18,7 @@ type Dao struct {
 	UsersCache  *cache.Pool
 	HttpClient  *resty.Client
 	GeoIp       *geoip2.Reader
+	Jwt         *conf.Jwt
 }
 
 func New(c *conf.Config) (d *Dao) {

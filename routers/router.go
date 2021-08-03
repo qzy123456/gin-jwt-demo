@@ -3,7 +3,6 @@ package routers
 import (
 	"github.com/gin-gonic/gin"
 	"jwtDemo/middleware"
-	"jwtDemo/middleware/jwt"
 	"jwtDemo/servcie"
 	"net/http"
 )
@@ -19,21 +18,18 @@ func InitRouters(srv *servcie.Service) *gin.Engine {
 
 	//配置加载静态文件夹，用于显示远程图片
 	r.StaticFS("/upload", http.Dir("./upload"))
-	r.POST("/login", Login)
-	r.POST("/register", RegisterUser)
+	r.POST("/login", Login)     //登陆，生成token
 	r.POST("/refresh", Refresh) //刷新touken
-	//上传文件
-	r.POST("/file-upload", Upload)
-	//批量上传文件
-	r.POST("/file-uploads", Uploads)
+	r.POST("/file-upload", Upload)//上传文件
+	r.POST("/file-uploads", Uploads)//批量上传文件
 	taR := r.Group("/data")
-	taR.Use(jwt.JWTAuth())
+	taR.Use(mid.JWTAuth())
 	{
 		taR.GET("/dataByTime", GetDataByTime)
 	}
 
-	r.POST("/allUser", FindAllUser)
-	r.POST("/getMenuById", FindMenuById)
+	r.POST("/allUser", FindAllUser)      //所有用户
+	r.POST("/getMenuById", FindMenuById) //根据用户id获取对应的路由tree
 
 	return r
 }

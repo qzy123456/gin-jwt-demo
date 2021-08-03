@@ -1,5 +1,6 @@
 package model
 
+import "github.com/dgrijalva/jwt-go"
 
 const (
 	dbName     = "myBlog.db"
@@ -25,11 +26,13 @@ type LoginReq struct {
 	Pwd   string `json:"pwd"`
 }
 
-
-// Register 插入用户，先检查是否存在用户，如果没有则存入
-func Register(phone string, pwd string) error {
-	return nil
+// 载荷，可以加一些自己需要的信息
+type CustomClaims struct {
+	ID    int `json:"userId"`
+	Name  string `json:"name"`
+	jwt.StandardClaims
 }
+
 // LoginCheck 登录验证
 func LoginCheck(loginReq LoginReq) (bool, User, error) {
 
@@ -42,11 +45,5 @@ func LoginCheck(loginReq LoginReq) (bool, User, error) {
 	return resultBool, resultUser, nil
 }
 
-// EditUserReq 更新用户信息数据类
-type EditUserReq struct {
-	UserId     string `json:"userId"`
-	UserName   string `json:"userName"`
-	UserGender string `json:"gender"`
-}
 
 

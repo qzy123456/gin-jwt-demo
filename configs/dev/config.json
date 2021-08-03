@@ -38,6 +38,9 @@
       "MaxActive": 30,
       "IdleTimeout": 300
     }
+  },
+  "jwt": {
+    "SigningKey" : "chaoyang.qi"
   }
 }
 

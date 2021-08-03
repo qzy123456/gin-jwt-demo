@@ -24,6 +24,10 @@ type App struct {
 	GlobalCachePrefix string
 }
 
+type Jwt struct {
+	SigningKey string
+}
+
 type Server struct {
 	RunMode      string
 	HttpPort     int
@@ -46,6 +50,7 @@ type Config struct {
 	Log      *xlog.Config
 	Redis    *Redis
 	Db       *orm.Config
+	JWT      *Jwt
 }
 
 //读取命令行启动参数，没有就要用dev
@@ -68,7 +73,7 @@ func Init() (err error) {
 	if err != nil {
 		return err
 	}
-	fmt.Println(Conf.Db.Dsn)
+	fmt.Println(Conf.JWT.SigningKey)
 	Conf.Log.LevelMode = Conf.Server.RunMode
 	return
 }

@@ -14,6 +14,7 @@ type Service struct {
 	log           *logrus.Logger
 	RequestLogger *logrus.Logger
 	HttpLogger    *logrus.Logger
+	Jwt           string
 }
 
 func New(c *conf.Config) (s *Service) {
