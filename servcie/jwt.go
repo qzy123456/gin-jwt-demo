@@ -18,7 +18,7 @@ type LoginResult struct {
 }
 
 // 生成令牌
-func (s *Service) GenerateToken(c *gin.Context, user model.User) {
+func (s *Service) GenerateToken(c *gin.Context, user *model.User) {
 
 	claims := model.CustomClaims{
 		user.UserId,
@@ -43,7 +43,7 @@ func (s *Service) GenerateToken(c *gin.Context, user model.User) {
 	log.Println(token)
 
 	data := LoginResult{
-		User:  user,
+		User:  *user,
 		Token: token,
 	}
 	//登陆成功，返回token，用户数据
