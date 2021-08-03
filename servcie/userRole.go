@@ -28,7 +28,7 @@ func FindMenus( id int)[]int  {
 	return users
 }
 //通过菜单id，拼接成递归样式
-func GetAllPerm2(id int)([]model.Tree) {
+func (s *Service) GetAllPerm2(id int)([]model.Tree) {
 	data := FindMenuById(id)
 	var options []model.Tree
 	o := GetAllPerm3(data,0,options)

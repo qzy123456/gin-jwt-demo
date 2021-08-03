@@ -25,11 +25,12 @@ func InitRouters(srv *servcie.Service) *gin.Engine {
 	taR := r.Group("/data")
 	taR.Use(mid.JWTAuth())
 	{
-		taR.GET("/dataByTime", GetDataByTime)
+		taR.GET("/dataByTime", GetDataByTime)  //测试token是否正常
+		taR.POST("/getMenuById", FindMenuById) //根据用户id获取对应的路由tree
 	}
 
 	r.POST("/allUser", FindAllUser)      //所有用户
-	r.POST("/getMenuById", FindMenuById) //根据用户id获取对应的路由tree
+
 
 	return r
 }
