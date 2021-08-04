@@ -88,13 +88,13 @@ func Uploads(ctx *gin.Context) {
 			data[url] = address + filePath
 		}
 		ctx.JSON(http.StatusOK, gin.H{
-			"code":    0,
+			"code":    200,
 			"message": "上传成功",
 			"data":    data,
 		})
 	} else {
 		ctx.JSON(http.StatusOK, gin.H{
-			"code":    0,
+			"code":    200,
 			"message": "获取数据失败",
 			"data":    data,
 		})

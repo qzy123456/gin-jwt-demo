@@ -22,6 +22,6 @@ func New(s *servcie.Service) *Middleware {
 func InitNoLoginAction() map[string]bool  {
 	mid := make(map[string]bool)
 	mid["/login"] = true
-	mid["/file-upload"] = true
+	//mid["/file-upload"] = true
     return mid
 }

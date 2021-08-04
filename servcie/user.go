@@ -1,19 +1,22 @@
 package servcie
 
 import (
-"fmt"
-"jwtDemo/model"
+	"jwtDemo/model"
 )
 //获取所有用户
-func (s *Service) FindAllUser() []model.User {
+func (s *Service) FindAllUser(pageInfo model.Page) (user []model.User)   {
 	var users []model.User
-	err := s.dao.Db.Find(&users)
+	users, err := s.dao.GetUserByPage(pageInfo)
 	if err != nil {
-		fmt.Println(err)
+		return nil
 	}
 	return users
 }
-//检测用户是否登陆
+//获取所有用户
+func (s *Service) GetUserCount(pageInfo model.Page) int64  {
+	return s.dao.GetUserCount(pageInfo)
+}
+//检测用户的账号，密码
 func (s *Service) CheckLogin(loginReq model.LoginReq) *model.User {
 	user := new(model.User)
 	useInfo := s.dao.CheckLogin(loginReq)
