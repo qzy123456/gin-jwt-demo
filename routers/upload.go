@@ -15,6 +15,7 @@ import (
 //单个文件上传
 func Upload(ctx *gin.Context) {
 	// 获取文件(注意这个地方的file要和html模板中的name一致)
+	address := fmt.Sprintf("%s:%d%s", GlobalService.Conf.Server.Address, GlobalService.Conf.Server.HttpPort,"/")
 	file, err := ctx.FormFile("file")
 	var data = make(map[string]interface{})
 	if err != nil {
@@ -49,7 +50,7 @@ func Upload(ctx *gin.Context) {
 		//保存上传文件
 		filePath := filepath.Join(utils.Mkdir("upload"), "/", fileName)
 		ctx.SaveUploadedFile(file, filePath)
-		data["url"] = "127.0.0.1:8080/" + filePath
+		data["url"] = address + filePath
 		ctx.JSON(http.StatusOK, gin.H{
 			"code":    0,
 			"message": "success",
@@ -61,6 +62,7 @@ func Upload(ctx *gin.Context) {
 //多个文件上传
 func Uploads(ctx *gin.Context) {
 	var data = make(map[string]interface{})
+	address := fmt.Sprintf("%s:%d%s", GlobalService.Conf.Server.Address, GlobalService.Conf.Server.HttpPort,"/")
 	if form, err := ctx.MultipartForm(); err == nil {
 		//1.获取文件
 		files := form.File["file"]
@@ -83,7 +85,7 @@ func Uploads(ctx *gin.Context) {
 			filePath := filepath.Join(utils.Mkdir("upload"), "/", fileName)
 			ctx.SaveUploadedFile(file, filePath)
 			url := "url_" + strconv.Itoa(k)
-			data[url] = "127.0.0.1:8080/" + filePath
+			data[url] = address + filePath
 		}
 		ctx.JSON(http.StatusOK, gin.H{
 			"code":    0,

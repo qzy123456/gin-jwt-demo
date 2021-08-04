@@ -4,7 +4,7 @@
   },
   "server": {
     "RunMode": "release",
-    "Address": "0.0.0.0",
+    "Address": "127.0.0.1",
     "HttpPort": "8888"
   },
   "log": {

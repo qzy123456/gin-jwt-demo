@@ -22,14 +22,14 @@ func InitRouters(srv *servcie.Service) *gin.Engine {
 	r.POST("/refresh", Refresh) //刷新touken
 	r.POST("/file-upload", Upload)//上传文件
 	r.POST("/file-uploads", Uploads)//批量上传文件
-	taR := r.Group("/data")
-	taR.Use(mid.JWTAuth())
+	user := r.Group("/user").Use(mid.JWTAuth())
 	{
-		taR.GET("/dataByTime", GetDataByTime)  //测试token是否正常
-		taR.POST("/getMenuById", FindMenuById) //根据用户id获取对应的路由tree
+		user.GET("/dataByTime", GetDataByTime)  //测试token是否正常
+		user.POST("/getMenuById", FindMenuById) //根据用户id获取对应的路由tree
+		user.POST("/allUser", FindAllUser)      //所有用户
 	}
 
-	r.POST("/allUser", FindAllUser)      //所有用户
+
 
 
 	return r
