@@ -6,10 +6,10 @@ import "github.com/dgrijalva/jwt-go"
 type User struct {
 	UserId         int `json:"userId" xorm:"pk user_id autoincr "`
 	Username       string `json:"userName" xorm:"unique"`
-	Password     string `json:"password" xorm:"column:password"`
-	Enabled      int `json:"enabled" xorm:"column:enabled"`
-	CreateTime   string `json:"create" xorm:"column:create_time"`
-	LastTime     string `json:"last" xorm:"column:last_time"`
+	Password     string `json:"password" xorm:"password"`
+	Enabled      int `json:"enabled" xorm:"enabled"`
+	CreateTime   string `json:"create" xorm:"create_time"`
+	LastTime     string `json:"last" xorm:"last_time"`
 }
 
 func (User) TableName()string  {

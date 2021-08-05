@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/appleboy/gin-jwt/v2 v2.6.4
+	github.com/arthurkiller/rollingwriter v1.1.2
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/emersion/go-sasl v0.0.0-20200509203442-7bfe0ed36a21
 	github.com/emersion/go-smtp v0.15.0

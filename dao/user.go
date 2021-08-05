@@ -53,7 +53,6 @@ func (s *Dao) DeleteById(id int) bool {
 	user := new(model.User)
 	user.UserId = id
 	affected, err := s.Db.Delete(user)
-	s.Db.ShowSQL(true)
 
 	if err != nil  || affected <= 0{
 	 return false

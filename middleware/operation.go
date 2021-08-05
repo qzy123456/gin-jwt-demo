@@ -2,12 +2,12 @@ package middleware
 
 import (
 	"bytes"
+	"fmt"
+	"jwtDemo/model"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-
-	"jwtDemo/model"
 )
 
 func (m *Middleware) OperationRecord() gin.HandlerFunc {
@@ -25,6 +25,17 @@ func (m *Middleware) OperationRecord() gin.HandlerFunc {
 		c.Next()
 		// 执行时间
 		latency := time.Now().Sub(startTime)
+		//存储到数据库，忽略error
+		if err:=m.Service.SaveOperation(model.Operation{
+			Ip:c.ClientIP(),
+			Method:c.Request.Method,
+			Path :c.Request.URL.Path,
+			Body : string(body),
+			Response: writer.body.String(),
+			//CreateTime :time.Now().Unix(),
+		});err!=nil{
+			fmt.Println(err)
+		}
 		//不在不需要打日志的列表内
 		if _, ok := m.NoLoginAction[c.Request.URL.Path]; !ok {
 			// 日志格式
@@ -40,15 +51,6 @@ func (m *Middleware) OperationRecord() gin.HandlerFunc {
 				"response":      writer.body.String(),
 			}).Info("OperationRecord")
 		}
-		//存储到数据库，忽略error
-		m.Service.SaveOperation(model.Operation{
-			Ip:c.ClientIP(),
-			Method:c.Request.Method,
-			Path :c.Request.URL.Path,
-			Body : string(body),
-			Response: writer.body.String(),
-			CreateTime :time.Now().Unix(),
-		})
 	}
 }
 

@@ -58,7 +58,7 @@ func newLfsHook(c *Config, suffix string) *lfshook.LfsHook {
 			logrus.FatalLevel: errWriter,
 			logrus.PanicLevel: errWriter,
 		}, &JSONFormatter{
-			TimestampFormat: "2006-01-02T15:04:05Z07:00",
+			TimestampFormat: "2006-01-02 15:04:05",
 			FieldMap: FieldMap{
 				logrus.FieldKeyLevel: "logLevel",
 				logrus.FieldKeyMsg:   "msg",

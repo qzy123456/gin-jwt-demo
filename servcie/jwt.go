@@ -25,7 +25,7 @@ func (s *Service) GenerateToken(c *gin.Context, user *model.User) {
 		user.Username,
 		jwt.StandardClaims{
 			NotBefore: int64(time.Now().Unix() - 1000), // 签名生效时间
-			ExpiresAt: int64(time.Now().Unix() + 86400), // 过期时间 一天
+			ExpiresAt: int64(time.Now().Unix() + 864000), // 过期时间 一天
 			Issuer:   s.Jwt,                   //签名的发行者
 		},
 	}
