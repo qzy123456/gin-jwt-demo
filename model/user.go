@@ -4,12 +4,12 @@ import "github.com/dgrijalva/jwt-go"
 
 // User 用户类
 type User struct {
-	UserId         int `json:"userId" gorm:"primary_key;column:user_id"`
-	Username       string `json:"userName" gorm:"column:username"`
-	Password     string `json:"password" gorm:"column:password"`
-	Enabled      int `json:"enabled" gorm:"column:enabled"`
-	CreateTime   string `json:"create" gorm:"column:create_time"`
-	LastTime     string `json:"last" gorm:"column:last_time"`
+	UserId         int `json:"userId" xorm:"pk user_id autoincr "`
+	Username       string `json:"userName" xorm:"unique"`
+	Password     string `json:"password" xorm:"column:password"`
+	Enabled      int `json:"enabled" xorm:"column:enabled"`
+	CreateTime   string `json:"create" xorm:"column:create_time"`
+	LastTime     string `json:"last" xorm:"column:last_time"`
 }
 
 func (User) TableName()string  {

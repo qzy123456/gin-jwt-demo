@@ -27,6 +27,8 @@ func InitRouters(srv *servcie.Service) *gin.Engine {
 		user.GET("/dataByTime", GetDataByTime)  //测试token是否正常
 		user.POST("/getMenuById", FindMenuById) //根据用户id获取对应的路由tree
 		user.POST("/allUser", FindAllUser)      //所有用户
+		user.POST("/saveUser", SaveUser)       //插入一个用户
+		user.POST("/deleteById", DeleteById)       //删除一个用户
 	}
 
 

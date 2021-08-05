@@ -31,5 +31,34 @@ func (s *Dao) GetUserByPage(pageInfo model.Page) (users []model.User,errs error)
 	}
 	return user,err
 }
+//新增一个用户
+func (s *Dao) SaveUser(user model.User) error{
+	_, err := s.Db.Insert(&user)
+	if err != nil {
+		return err
+	}
+	return  nil
+}
+//检测用户名是否存在
+func (s *Dao) CheckUserByUserName(username string) bool {
+	user := new(model.User)
+	has, err := s.Db.Where("username=?", username).Exist(user)
+	if !has || err!= nil{
+		return false
+	}
+	return true
+}
+//检测登陆的账号密码
+func (s *Dao) DeleteById(id int) bool {
+	user := new(model.User)
+	user.UserId = id
+	affected, err := s.Db.Delete(user)
+	s.Db.ShowSQL(true)
+
+	if err != nil  || affected <= 0{
+	 return false
+	}
+	return true
+}
 
 

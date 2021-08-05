@@ -46,3 +46,52 @@ func FindMenuById(c *gin.Context) {
 	}
 
 }
+
+//插入一条数据
+func SaveUser(c *gin.Context) {
+	var user  model.User
+	//没有错误
+	if c.BindJSON(&user) == nil {
+		//检测有无用户
+		if GlobalService.CheckUserByName(user.Username){
+			c.JSON(http.StatusOK, gin.H{
+				"code":  consts.ERROR_EXIST_USER,
+				"msg":   consts.GetMsg(consts.ERROR_EXIST_USER),
+			})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{
+			"code":  consts.SUCCESS,
+			"msg":   consts.GetMsg(consts.SUCCESS),
+			"data":  GlobalService.SaveUser(user),
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"code": consts.INVALID_PARAMS,
+			"msg":  consts.GetMsg(consts.INVALID_PARAMS),
+		})
+	}
+}
+//根据用户id删除
+func DeleteById(c *gin.Context) {
+	var user  model.User
+	//没有错误
+	if c.BindJSON(&user) == nil {
+		if !GlobalService.DeleteById(5){
+			c.JSON(http.StatusOK, gin.H{
+				"code":  consts.ERROR_DELETE_ERROR,
+				"msg":   consts.GetMsg(consts.ERROR_DELETE_ERROR),
+			})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{
+			"code":  consts.SUCCESS,
+			"msg":   consts.GetMsg(consts.SUCCESS),
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"code": consts.INVALID_PARAMS,
+			"msg":  consts.GetMsg(consts.INVALID_PARAMS),
+		})
+	}
+}

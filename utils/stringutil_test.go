@@ -20,3 +20,6 @@ func TestReverse2(t *testing.T) {
 		}
 	}
 }
+func TestGetYmd(t *testing.T) {
+	GetYmd()
+}

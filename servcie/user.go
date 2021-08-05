@@ -2,6 +2,7 @@ package servcie
 
 import (
 	"jwtDemo/model"
+	"jwtDemo/utils"
 )
 //获取所有用户
 func (s *Service) FindAllUser(pageInfo model.Page) (user []model.User)   {
@@ -25,4 +26,30 @@ func (s *Service) CheckLogin(loginReq model.LoginReq) *model.User {
 		return user
 	}
 	return nil
+}
+//检测用户的账号，密码
+func (s *Service) SaveUser(user model.User) error {
+	user.CreateTime = utils.GetYmd()
+	user.LastTime = utils.GetYmds()
+	err := s.dao.SaveUser(user)
+	if err !=nil{
+		return err
+	}
+	return nil
+}
+//检测用户的账号，密码
+func (s *Service) CheckUserByName(username string) bool {
+	useInfo := s.dao.CheckUserByUserName(username)
+	if useInfo {
+		return true
+	}
+	return false
+}
+//根据id删除
+func (s *Service)DeleteById(id int) bool  {
+	useInfo := s.dao.DeleteById(id)
+	if useInfo {
+		return true
+	}
+	return false
 }
