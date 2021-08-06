@@ -14,7 +14,7 @@ func InitRouters(srv *servcie.Service) *gin.Engine {
 	//加载中间件
 	mid := middleware.New(GlobalService)
     //跨域,日志
-	r.Use(mid.Cors(),mid.OperationRecord())
+	r.Use(mid.Cors(),mid.OperationRecord(),mid.SetUp())
 
 	//配置加载静态文件夹，用于显示远程图片
 	r.StaticFS("/upload", http.Dir("./upload"))
@@ -29,6 +29,8 @@ func InitRouters(srv *servcie.Service) *gin.Engine {
 		user.POST("/allUser", FindAllUser)      //所有用户
 		user.POST("/saveUser", SaveUser)       //插入一个用户
 		user.POST("/deleteById", DeleteById)       //删除一个用户
+		user.POST("/update", UpdateById)       //修改一个用户
+		user.POST("/insertRole", InsertRole)       //给用户分配角色
 	}
 
 

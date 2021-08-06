@@ -34,6 +34,7 @@ func Init(c *Config, suffix string) *logrus.Logger {
 	case "error":
 		setNull(logger)
 		logger.SetLevel(logrus.ErrorLevel)
+		logger.SetReportCaller(true)
 	default:
 		setNull(logger)
 		logger.SetLevel(logrus.InfoLevel)

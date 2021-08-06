@@ -10,6 +10,11 @@ type UserRole struct {
 	Menu Menu `xorm:"extends"`
 }
 
+type UserRoleNew struct {
+	UserId int ` json:"user_id"`
+	RoleId int ` json:"role_id"`
+}
+
 type Tree struct {
 	RoleId int ` json:"role_id"`
 	MenuId  int    `json:"menu_id"`
@@ -19,5 +24,8 @@ type Tree struct {
 }
 
 func (UserRole) TableName()string  {
+	return "tbl_user_role"
+}
+func (UserRoleNew) TableName()string  {
 	return "tbl_user_role"
 }

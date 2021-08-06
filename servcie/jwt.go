@@ -48,7 +48,7 @@ func (s *Service) GenerateToken(c *gin.Context, user *model.User) {
 	}
 	//登陆成功，返回token，用户数据
 	c.JSON(http.StatusOK, gin.H{
-		"status": 0,
+		"status": 200,
 		"msg":    "登录成功！",
 		"data":   data,
 	})

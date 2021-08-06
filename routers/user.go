@@ -95,3 +95,61 @@ func DeleteById(c *gin.Context) {
 		})
 	}
 }
+//根据用户id修改
+func UpdateById(c *gin.Context) {
+	var user  model.User
+	//没有错误
+	if c.BindJSON(&user) == nil {
+		//检测用户名不能重复
+		if GlobalService.CheckUserByName(user.Username){
+			c.JSON(http.StatusOK, gin.H{
+				"code":  consts.ERROR_EXIST_USER,
+				"msg":   consts.GetMsg(consts.ERROR_EXIST_USER),
+			})
+			return
+		}
+		//修改失败
+		if !GlobalService.UpdateById(user){
+			c.JSON(http.StatusOK, gin.H{
+				"code":  consts.ERROR_UPDATE_ERROR,
+				"msg":   consts.GetMsg(consts.ERROR_UPDATE_ERROR),
+			})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{
+			"code":  consts.SUCCESS,
+			"msg":   consts.GetMsg(consts.SUCCESS),
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"code": consts.INVALID_PARAMS,
+			"msg":  consts.GetMsg(consts.INVALID_PARAMS),
+		})
+	}
+}
+//给用户分配角色
+func InsertRole(c *gin.Context) {
+	var user  model.UserRoleNew
+	//没有错误
+	if c.BindJSON(&user) == nil {
+		//先删除
+		GlobalService.DeleteUserRoleById(user.UserId)
+		//插入失败
+		if err := GlobalService.SaveUserRole(user);err != nil{
+			c.JSON(http.StatusOK, gin.H{
+				"code":  consts.ERROR_UPDATE_ERROR,
+				"msg":   consts.GetMsg(consts.ERROR_UPDATE_ERROR),
+			})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{
+			"code":  consts.SUCCESS,
+			"msg":   consts.GetMsg(consts.SUCCESS),
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"code": consts.INVALID_PARAMS,
+			"msg":  consts.GetMsg(consts.INVALID_PARAMS),
+		})
+	}
+}

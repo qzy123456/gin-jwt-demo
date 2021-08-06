@@ -15,7 +15,7 @@ func (m *Middleware) OperationRecord() gin.HandlerFunc {
 		var (
 			body   []byte
 		)
-		writer := responseBodyWriter{
+		writer := ResponseBodyWriter{
 			ResponseWriter: c.Writer,
 			body:           &bytes.Buffer{},
 		}
@@ -54,12 +54,12 @@ func (m *Middleware) OperationRecord() gin.HandlerFunc {
 	}
 }
 
-type responseBodyWriter struct {
+type ResponseBodyWriter struct {
 	gin.ResponseWriter
 	body *bytes.Buffer
 }
 
-func (r responseBodyWriter) Write(b []byte) (int, error) {
+func (r ResponseBodyWriter) Write(b []byte) (int, error) {
 	r.body.Write(b)
 	return r.ResponseWriter.Write(b)
 }

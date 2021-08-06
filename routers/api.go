@@ -3,6 +3,7 @@ package routers
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"jwtDemo/consts"
 	myjwt "jwtDemo/middleware"
 	"jwtDemo/model"
 	"net/http"
@@ -17,14 +18,14 @@ func Login(c *gin.Context) {
 			GlobalService.GenerateToken(c, user)
 		} else {
 			c.JSON(http.StatusOK, gin.H{
-				"status": -1,
-				"msg":    "验证失败,",
+				"code": consts.INVALID_PARAMS,
+				"msg":  consts.GetMsg(consts.INVALID_PARAMS),
 			})
 		}
 	} else {
 		c.JSON(http.StatusOK, gin.H{
-			"status": -1,
-			"msg":    "json 解析失败",
+			"code": consts.INVALID_PARAMS,
+			"msg":  consts.GetMsg(consts.INVALID_PARAMS),
 		})
 	}
 }

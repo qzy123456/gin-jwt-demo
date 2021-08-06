@@ -4,8 +4,6 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
-	"github.com/lestrrat-go/file-rotatelogs"
-	"time"
 )
 
 type Config struct {
@@ -34,18 +32,18 @@ func NewMySQL(c *Config) (engine *xorm.EngineGroup) {
 	//最大打开连接数
 	engine.SetMaxOpenConns(c.MaxOpen)
 
-	writer, err := rotatelogs.New(
-		"./runtime/logs",
-		rotatelogs.WithLinkName("mysql_log"),
-		rotatelogs.WithMaxAge(time.Duration(86400 * 3)*time.Second),
-		rotatelogs.WithRotationTime(time.Duration(86400)*time.Second),
-	)
-	if err != nil {
-		panic(err)
-	}
-	var logger *xorm.SimpleLogger = xorm.NewSimpleLogger(writer)
-
-	engine.SetLogger(logger)
+	//writer, err := rotatelogs.New(
+	//	"./runtime/logs",
+	//	rotatelogs.WithLinkName("mysql_log"),
+	//	rotatelogs.WithMaxAge(time.Duration(86400 * 3)*time.Second),
+	//	rotatelogs.WithRotationTime(time.Duration(86400)*time.Second),
+	//)
+	//if err != nil {
+	//	panic(err)
+	//}
+	//var logger *xorm.SimpleLogger = xorm.NewSimpleLogger(writer)
+	//
+	//engine.SetLogger(logger)
 	//是否打印sql语句
 	if c.Debug{
 		engine.ShowSQL(true)

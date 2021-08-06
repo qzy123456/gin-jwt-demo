@@ -6,7 +6,7 @@ var MsgFlags = map[int]string{
 	INVALID_PARAMS:                  "请求参数错误",
 	ERROR_EXIST_USER:                 "已存在该用户",
 	ERROR_DELETE_ERROR:              "删除失败",
-	ERROR_NOT_EXIST_TAG:             "该标签不存在",
+	ERROR_UPDATE_ERROR:              "修改失败",
 	ERROR_GET_TAGS_FAIL:             "获取所有标签失败",
 	ERROR_COUNT_TAG_FAIL:            "统计标签失败",
 	ERROR_ADD_TAG_FAIL:              "新增标签失败",
