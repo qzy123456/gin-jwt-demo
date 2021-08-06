@@ -3,8 +3,6 @@ module jwtDemo
 go 1.13
 
 require (
-	github.com/appleboy/gin-jwt/v2 v2.6.4
-	github.com/arthurkiller/rollingwriter v1.1.2
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/emersion/go-sasl v0.0.0-20200509203442-7bfe0ed36a21
 	github.com/emersion/go-smtp v0.15.0
@@ -17,17 +15,15 @@ require (
 	github.com/go-xorm/xorm v0.7.9
 	github.com/gobuffalo/packr/v2 v2.8.1
 	github.com/gomodule/redigo v2.0.0+incompatible
-	github.com/howeyc/fsnotify v0.9.0 // indirect
 	github.com/ipipdotnet/ipdb-go v1.3.1
 	github.com/jinzhu/gorm v1.9.16
 	github.com/jinzhu/now v1.1.2 // indirect
 	github.com/kr/pretty v0.2.1 // indirect
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/lestrrat-go/strftime v1.0.5 // indirect
-	github.com/mattn/go-colorable v0.1.8 // indirect
+	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
+	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/oschwald/geoip2-golang v1.5.0
-	github.com/pilu/config v0.0.0-20131214182432-3eb99e6c0b9a // indirect
-	github.com/pilu/fresh v0.0.0-20190826141211-0fa698148017 // indirect
 	github.com/pkg/errors v0.8.1
 	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5
 	github.com/satori/go.uuid v1.2.0
