@@ -24,7 +24,6 @@ func (m *Middleware) SetUp() gin.HandlerFunc {
 					"body":          c.Request.Body,
 					"error_message": err,
 					"error":         DebugStack,
-					"status":        c.Writer.Status(),
 				}).Error("Error")
 				c.AbortWithStatus(http.StatusInternalServerError)
 			}
