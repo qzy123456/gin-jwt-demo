@@ -104,4 +104,30 @@ func UpdateMenuById(c *gin.Context) {
 		})
 	}
 }
+//给角色分配id
+func GiveMenu(c *gin.Context)  {
+	var user  model.RoleMenuNew
+	//没有错误
+	if c.BindJSON(&user) == nil {
+		//先删除角色的menu
+		GlobalService.DelUserMenuByRoleId(user.RoleId)
+		if err:=GlobalService.SaveRoleMenu(user);err != nil{
+			c.JSON(http.StatusOK, gin.H{
+				"code":  consts.ERROR,
+				"msg":   err.Error(),
+			})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"code":  consts.SUCCESS,
+			"msg":   consts.GetMsg(consts.SUCCESS),
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"code": consts.INVALID_PARAMS,
+			"msg":  consts.GetMsg(consts.INVALID_PARAMS),
+		})
+	}
+}
 
