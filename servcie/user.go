@@ -32,7 +32,7 @@ func (s *Service) CheckLogin(loginReq model.LoginReq) *model.User {
 }
 
 //检测用户的账号，密码
-func (s *Service) SaveUser(user model.User) error {
+func (s *Service) SaveUser(user model.UserNew) error {
 	user.CreateTime = utils.GetYmd()
 	user.LastTime = utils.GetYmds()
 	err := s.dao.SaveUser(user)
@@ -43,8 +43,8 @@ func (s *Service) SaveUser(user model.User) error {
 }
 
 //检测用户的账号，密码
-func (s *Service) CheckUserByName(username string) bool {
-	useInfo := s.dao.CheckUserByUserName(username)
+func (s *Service) CheckUserByName(user model.UserNew) bool {
+	useInfo := s.dao.CheckUserByUserName(user)
 	if useInfo {
 		return true
 	}
@@ -61,7 +61,7 @@ func (s *Service) DeleteById(id int) bool {
 }
 
 //根据id修改
-func (s *Service) UpdateById(user model.User) bool {
+func (s *Service) UpdateById(user model.UserNew) bool {
 	useInfo := s.dao.UpdateById(user)
 	if useInfo {
 		return true
@@ -72,6 +72,14 @@ func (s *Service) UpdateById(user model.User) bool {
 //给用户分配角色
 func (s *Service) SaveUserRole(user model.UserRoleNew) error {
 	err := s.dao.SaveUserRole(user)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+//删除用户的权限
+func (s *Service) DelUserRole(id int) error {
+	err := s.dao.DelUserRole(id)
 	if err != nil {
 		return err
 	}

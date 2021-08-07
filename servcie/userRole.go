@@ -45,6 +45,7 @@ func GetAllPerm3(data []model.UserRole,id int,cp []model.Tree) []model.Tree {
 			option.MenuId = value.Menu.MenuId
 			option.MenuName = value.Menu.Menuname
 			option.MenuUrl = value.Menu.MenuUrl
+			option.IsShow =  value.Menu.IsShow
 			option.Children = GetAllPerm3(data,value.Menu.MenuId,options)
 			cp = append(cp,option)
 		}

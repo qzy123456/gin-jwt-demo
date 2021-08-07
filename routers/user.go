@@ -49,21 +49,27 @@ func FindMenuById(c *gin.Context) {
 
 //插入一条数据
 func SaveUser(c *gin.Context) {
-	var user  model.User
+	var user  model.UserNew
 	//没有错误
 	if c.BindJSON(&user) == nil {
 		//检测有无用户
-		if GlobalService.CheckUserByName(user.Username){
+		if GlobalService.CheckUserByName(user){
 			c.JSON(http.StatusOK, gin.H{
 				"code":  consts.ERROR_EXIST_USER,
 				"msg":   consts.GetMsg(consts.ERROR_EXIST_USER),
 			})
 			return
 		}
+		if err:= GlobalService.SaveUser(user);err !=nil{
+			c.JSON(http.StatusOK, gin.H{
+				"code":  consts.ERROR,
+				"msg":   err.Error(),
+			})
+			return
+		}
 		c.JSON(http.StatusOK, gin.H{
 			"code":  consts.SUCCESS,
 			"msg":   consts.GetMsg(consts.SUCCESS),
-			"data":  GlobalService.SaveUser(user),
 		})
 	} else {
 		c.JSON(http.StatusOK, gin.H{
@@ -77,13 +83,14 @@ func DeleteById(c *gin.Context) {
 	var user  model.User
 	//没有错误
 	if c.BindJSON(&user) == nil {
-		if !GlobalService.DeleteById(5){
+		if !GlobalService.DeleteById(user.UserId){
 			c.JSON(http.StatusOK, gin.H{
 				"code":  consts.ERROR_DELETE_ERROR,
 				"msg":   consts.GetMsg(consts.ERROR_DELETE_ERROR),
 			})
 			return
 		}
+		GlobalService.DelUserRole(user.UserId)
 		c.JSON(http.StatusOK, gin.H{
 			"code":  consts.SUCCESS,
 			"msg":   consts.GetMsg(consts.SUCCESS),
@@ -97,11 +104,11 @@ func DeleteById(c *gin.Context) {
 }
 //根据用户id修改
 func UpdateById(c *gin.Context) {
-	var user  model.User
+	var user  model.UserNew
 	//没有错误
 	if c.BindJSON(&user) == nil {
 		//检测用户名不能重复
-		if GlobalService.CheckUserByName(user.Username){
+		if GlobalService.CheckUserByName(user){
 			c.JSON(http.StatusOK, gin.H{
 				"code":  consts.ERROR_EXIST_USER,
 				"msg":   consts.GetMsg(consts.ERROR_EXIST_USER),

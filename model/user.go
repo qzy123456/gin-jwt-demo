@@ -10,11 +10,22 @@ type User struct {
 	Enabled      int `json:"enabled" xorm:"enabled"`
 	CreateTime   string `json:"create" xorm:"create_time"`
 	LastTime     string `json:"last" xorm:"last_time"`
-	Role        Role `xorm:"extends"`
-	UserRole    UserRoleNew `xorm:"extends"`
+	Role        Role ` xorm:"extends"`
+	UserRole    UserRoleNew ` xorm:"extends"`
 }
-
+// User 用户类
+type UserNew struct {
+	UserId         int `json:"userId" xorm:"pk user_id autoincr "`
+	Username       string `json:"userName" xorm:"unique"`
+	Password     string `json:"password" xorm:"password"`
+	Enabled      int `json:"enabled" xorm:"enabled"`
+	CreateTime   string `json:"create" xorm:"create_time"`
+	LastTime     string `json:"last" xorm:"last_time"`
+}
 func (User) TableName()string  {
+	return "tbl_user"
+}
+func (UserNew) TableName()string  {
 	return "tbl_user"
 }
 // LoginReq 登录请求参数类

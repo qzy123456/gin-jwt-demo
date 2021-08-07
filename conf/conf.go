@@ -60,7 +60,7 @@ func init() {
 
 // Init Config
 func Init() (err error) {
-	fmt.Println("==== Init m3 from " + confPath + " ====")
+	fmt.Println("==== Init config from " + confPath + " ====")
 
 	// 读取 server 配置
 	confViper := viper.New()

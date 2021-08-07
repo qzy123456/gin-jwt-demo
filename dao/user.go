@@ -3,6 +3,7 @@ package dao
 import (
 	"fmt"
 	"jwtDemo/model"
+	"jwtDemo/utils"
 )
 //检测登陆的账号密码
 func (s *Dao) CheckLogin(loginReq model.LoginReq) *model.User  {
@@ -35,7 +36,7 @@ func (s *Dao) GetUserByPage(pageInfo model.Page) (users []model.User,errs error)
 	return user,err
 }
 //新增一个用户
-func (s *Dao) SaveUser(user model.User) error{
+func (s *Dao) SaveUser(user model.UserNew) error{
 	_, err := s.Db.Insert(&user)
 	if err != nil {
 		return err
@@ -43,15 +44,23 @@ func (s *Dao) SaveUser(user model.User) error{
 	return  nil
 }
 //检测用户名是否存在
-func (s *Dao) CheckUserByUserName(username string) bool {
-	user := new(model.User)
-	has, err := s.Db.Where("username=?", username).Count(user)
-	if err!= nil{
+func (s *Dao) CheckUserByUserName(users model.UserNew) bool {
+	user := new(model.UserNew)
+	var has int64
+	var err error
+	if users.UserId != 0 {
+		has, err = s.Db.Where("username=?", users.Username).NotIn("userId", users.UserId).Count(user)
+	} else {
+		has, err = s.Db.Where("username=?", users.Username).Count(user)
+
+	}
+	if err != nil {
 		return false
 	}
-	if has >= 1{
+	if has >= 1 {
 		return true
 	}
+
 	return false
 }
 //检测登陆的账号密码
@@ -59,17 +68,19 @@ func (s *Dao) DeleteById(id int) bool {
 	user := new(model.User)
 	user.UserId = id
 	affected, err := s.Db.Delete(user)
-
+    fmt.Println(user)
 	if err != nil  || affected <= 0{
 	 return false
 	}
 	return true
 }
 //检测登陆的账号密码
-func (s *Dao) UpdateById(us model.User) bool {
-	user := new(model.User)
+func (s *Dao) UpdateById(us model.UserNew) bool {
+	user := new(model.UserNew)
 	user = &us
-	affected, err := s.Db.Where("user_id = ?", user.UserId).Update(user)
+	user.LastTime = utils.GetYmds()
+	affected, err := s.Db.Where("user_id = ?", user.UserId).
+		Cols("username,password,enabled,last_time").Update(user)
 	if err != nil  || affected < 0{
 		return false
 	}
@@ -78,6 +89,17 @@ func (s *Dao) UpdateById(us model.User) bool {
 //新增一个用户
 func (s *Dao) SaveUserRole(user model.UserRoleNew) error{
 	_, err := s.Db.Insert(user)
+	fmt.Println(err)
+	if err != nil {
+		return err
+	}
+	return  nil
+}
+//删除用户顺便删除权限
+func (s *Dao) DelUserRole(id int) error{
+	user := new(model.UserRoleNew)
+	user.UserId = id
+	_, err := s.Db.Delete(user)
 	fmt.Println(err)
 	if err != nil {
 		return err

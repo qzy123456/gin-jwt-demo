@@ -9,3 +9,7 @@ type RoleMenu struct {
     RoleId int  ` json:"role_id"`
     MenuId int  ` json:"menu_id"`
 }
+
+func (RoleMenu) TableName()string  {
+    return "tbl_role_menu"
+}

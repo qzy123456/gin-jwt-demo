@@ -20,6 +20,7 @@ type Tree struct {
 	MenuId  int    `json:"menu_id"`
 	MenuName string `json:"menu_name"`
 	MenuUrl string `json:"menu_url"`
+	IsShow int `json:"isShow"`
 	Children []Tree `json:"children"`
 }
 
