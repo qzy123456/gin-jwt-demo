@@ -21,8 +21,8 @@ func (s *Service) GetUserCount(pageInfo model.Page) int64 {
 }
 
 //检测用户的账号，密码
-func (s *Service) CheckLogin(loginReq model.LoginReq) *model.User {
-	user := new(model.User)
+func (s *Service) CheckLogin(loginReq model.LoginReq) *model.UserNew {
+	user := new(model.UserNew)
 	useInfo := s.dao.CheckLogin(loginReq)
 	if useInfo != nil {
 		user = useInfo

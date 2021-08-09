@@ -12,7 +12,7 @@ func FindMenuById( id int)[]model.UserRole  {
 	initialize.Xorm().Select("*").Table("tbl_user_role").Join("INNER", "`tbl_role`", "tbl_user_role.user_id= tbl_role.role_id").
 		Join("INNER", "`tbl_role_menu`", "tbl_user_role.role_id = tbl_role_menu.role_id").
 		Join("INNER", "`tbl_menu`", "tbl_role_menu.menu_id = tbl_menu.menu_id").
-		Where("tbl_user_role.role_id = ?",id).
+		Where("tbl_user_role.user_id = ?",id).
 		Find(&users)
 	return users
 }
@@ -100,4 +100,53 @@ func GetAllPerm4(id int,ids []int)([]model.Tree) {
 		treeList = append(treeList, node)
 	}
 	return treeList
+}
+//通过菜单id，拼接成递归样式
+func (s *Service) GetAllPermByRoleId(id int)([]model.Tree) {
+	data := FindMenuByRoleId(id)
+	var options []model.Tree
+	o := GetAllPerm3(data,0,options)
+	return o
+}
+//查询所有的当前用户权限的菜单ID
+func FindMenuByRoleId( id int)[]model.UserRole  {
+	users := make([]model.UserRole, 0)
+	initialize.Xorm().Select("*").Table("tbl_role").
+		Join("INNER", "`tbl_role_menu`", "tbl_role.role_id = tbl_role_menu.role_id").
+		Join("INNER", "`tbl_menu`", "tbl_role_menu.menu_id = tbl_menu.menu_id").
+		Where("tbl_role.role_id = ?",id).
+		Find(&users)
+	return users
+}
+//通过菜单id，拼接成递归样式
+func (s *Service) GetAllPerms()([]model.MenuNew) {
+	data := FindMenuByRoleIds()
+	var options []model.MenuNew
+	o := GetAllPerm5(data,0,options)
+	return o
+}
+//查询所有的当前用户权限的菜单ID
+func FindMenuByRoleIds( )[]model.MenuNew  {
+	users := make([]model.MenuNew, 0)
+	initialize.Xorm().Select("*").Table("tbl_menu").
+		Find(&users)
+	return users
+}
+//通过菜单id，拼接成递归样式(这种最优，只需要查询一次数据库)
+func GetAllPerm5(data []model.MenuNew,id int,cp []model.MenuNew) []model.MenuNew {
+	var options []model.MenuNew
+
+	for _, value := range data {
+		if value.ParentId == id{
+			var option model.MenuNew
+			option.ParentId = value.ParentId
+			option.MenuId = value.MenuId
+			option.IsShow = value.IsShow
+			option.MenuUrl = value.MenuUrl
+			option.Menuname = value.Menuname
+			option.Children = GetAllPerm5(data,value.MenuId,options)
+			cp = append(cp,option)
+		}
+	}
+	return  cp
 }

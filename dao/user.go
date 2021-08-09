@@ -6,8 +6,8 @@ import (
 	"jwtDemo/utils"
 )
 //检测登陆的账号密码
-func (s *Dao) CheckLogin(loginReq model.LoginReq) *model.User  {
-	user := new(model.User)
+func (s *Dao) CheckLogin(loginReq model.LoginReq) *model.UserNew  {
+	user := new(model.UserNew)
 	has, err := s.Db.Where("username=?", loginReq.Username).Where("password=?", loginReq.Password).Get(user)
 	if !has || err!= nil{
 		return nil
@@ -68,7 +68,7 @@ func (s *Dao) DeleteById(id int) bool {
 	user := new(model.User)
 	user.UserId = id
 	affected, err := s.Db.Delete(user)
-    fmt.Println(user)
+    fmt.Println(err)
 	if err != nil  || affected <= 0{
 	 return false
 	}
@@ -79,8 +79,7 @@ func (s *Dao) UpdateById(us model.UserNew) bool {
 	user := new(model.UserNew)
 	user = &us
 	user.LastTime = utils.GetYmds()
-	affected, err := s.Db.Where("user_id = ?", user.UserId).
-		Cols("username,password,enabled,last_time").Update(user)
+	affected, err := s.Db.Where("user_id = ?", user.UserId).Update(user)
 	if err != nil  || affected < 0{
 		return false
 	}

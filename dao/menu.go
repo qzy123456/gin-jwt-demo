@@ -6,7 +6,7 @@ import (
 )
 
 
-//分页查询用户总量
+//menu
 func (s *Dao) FindAllMenu() (user []model.UserRole)  {
 	users := make([]model.UserRole, 0)
 	err :=  s.Db.Select("*").Table("tbl_user_role").Join("INNER", "`tbl_role`", "tbl_user_role.user_id= tbl_role.role_id").
@@ -71,9 +71,7 @@ func (s *Dao)SaveMenu(menu model.Menu) error  {
 }
 //删除
 func (s *Dao)DeleteMenuById(id int) error{
-	menu := new(model.Menu)
-	menu.MenuId = id
-	_, err := s.Db.Delete(menu)
+	_, err := s.Db.Exec("DELETE FROM `tbl_menu` WHERE (((menu_id = ?)) OR (parent_id = ?))", id,id)
 	if err != nil  {
 		return err
 	}

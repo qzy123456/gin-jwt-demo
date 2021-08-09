@@ -10,22 +10,16 @@ import (
 
 //获取所有的角色列表
 func FindAllRole(c *gin.Context) {
-	var pageInfo model.Page
-	//没有错误
-	if c.BindJSON(&pageInfo) == nil {
+	var roles  = GlobalService.FindAllRole()
+	for k,v :=range roles  {
+		roles[k].Children = GlobalService.GetAllPermByRoleId(v.RoleId)
+	}
 		c.JSON(http.StatusOK, gin.H{
 			"code":  consts.SUCCESS,
 			"msg":   consts.GetMsg(consts.SUCCESS),
-			"data":  GlobalService.FindAllRole(pageInfo),
-			"count": GlobalService.GetRoleCount(pageInfo),
+			"data":  roles,
+			"count": GlobalService.GetRoleCount(),
 		})
-	} else {
-		c.JSON(http.StatusOK, gin.H{
-			"code": consts.INVALID_PARAMS,
-			"msg":  consts.GetMsg(consts.INVALID_PARAMS),
-		})
-	}
-
 }
 //插入一条数据
 func SaveRole(c *gin.Context) {
@@ -117,4 +111,44 @@ func UpdateroleById(c *gin.Context) {
 		})
 	}
 }
+//根据roleid查询所有的信息
+func GetMenuById(c *gin.Context){
+	var role  model.Role
+	if c.BindJSON(&role) == nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": consts.SUCCESS,
+			"msg":  consts.GetMsg(consts.SUCCESS),
+			"data": GlobalService.GetAllPermByRoleId(role.RoleId),
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"code": consts.SUCCESS,
+			"msg":  consts.GetMsg(consts.SUCCESS),
+			"data": nil,
+		})
+	}
+}
+//删除对应的menu和用户id
+func DeleteMenuAndRoleId(c *gin.Context) {
+	var roleMenu  model.RoleMenu
+	//没有错误
+	if c.BindJSON(&roleMenu) == nil {
+		if err:=GlobalService.DeleteMenuAndRoleId(roleMenu);err!=nil{
+			c.JSON(http.StatusOK, gin.H{
+				"code":  consts.ERROR_DELETE_ERROR,
+				"msg":   err.Error(),
+			})
+			return
+		}
 
+		c.JSON(http.StatusOK, gin.H{
+			"code":  consts.SUCCESS,
+			"msg":   consts.GetMsg(consts.SUCCESS),
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"code": consts.INVALID_PARAMS,
+			"msg":  consts.GetMsg(consts.INVALID_PARAMS),
+		})
+	}
+}

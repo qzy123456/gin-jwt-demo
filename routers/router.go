@@ -41,6 +41,8 @@ func InitRouters(srv *servcie.Service) *gin.Engine {
 		role.POST("/save", SaveRole)     //插入一个角色
 		role.POST("/delete", DeleteRoleById) //删除一个角色
 		role.POST("/update", UpdateroleById)     //修改一个角色
+		role.POST("/getMenuById", GetMenuById)     //根据roleid，返回所有的menu信息
+		role.POST("/deleteMenuAndRoleId", DeleteMenuAndRoleId)     //根据roleid，返回所有的menu信息
 	}
 	//菜单
 	menu := r.Group("/menu").Use(mid.JWTAuth())

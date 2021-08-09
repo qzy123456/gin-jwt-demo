@@ -14,6 +14,7 @@ func Login(c *gin.Context) {
 	var loginReq model.LoginReq
 	if c.BindJSON(&loginReq) == nil {
 		user := GlobalService.CheckLogin(loginReq)
+		fmt.Println(user)
 		if user != nil {
 			GlobalService.GenerateToken(c, user)
 		} else {

@@ -18,19 +18,17 @@ func (s *Dao) DeleteUserRoleById(id int) bool{
 }
 
 //查询用户总量，用于分页
-func (s *Dao) GetRoleCount(pageInfo model.Page) int64  {
+func (s *Dao) GetRoleCount() int64  {
 	user := new(model.Role)
-	total, _ := s.Db.Where("role_name like ? ","%"+pageInfo.Query+"%").Count(user)
+	total, _ := s.Db.Count(user)
 	return  total
 }
 
 //分页查询用户总量
-func (s *Dao) GetRoleByPage(pageInfo model.Page) (users []model.Role,errs error)  {
-	var user  []model.Role
-	err := s.Db.
-		Where("role_name like ? ","%"+pageInfo.Query+"%").Limit(pageInfo.PageSize, (pageInfo.PageNum - 1) * pageInfo.PageSize).Find(&user)
+func (s *Dao) GetRoleByPage() (users []*model.RoleNew,errs error)  {
+	var user  []*model.RoleNew
+	err := s.Db.Find(&user)
 	fmt.Println(err)
-	s.Db.ShowSQL(true)
 	if err!= nil{
 		return nil,err
 	}
@@ -76,4 +74,15 @@ func (s *Dao) UpdateRoleById(us model.Role) bool {
 		return false
 	}
 	return true
+}
+
+func (s *Dao)DeleteMenuAndRoleId(role model.RoleMenu)error  {
+	roleNew := new(model.RoleMenu)
+	roleNew.RoleId = role.RoleId
+	roleNew.MenuId = role.MenuId
+	_, err := s.Db.Delete(roleNew)
+	if err != nil  {
+		return err
+	}
+	return nil
 }

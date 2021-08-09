@@ -13,7 +13,7 @@ func FindAllMenu(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"code":  consts.SUCCESS,
 			"msg":   consts.GetMsg(consts.SUCCESS),
-			"data":  GlobalService.FindAllMenu(),
+			"data":  GlobalService.GetAllPerms(),
 		})
 
 }

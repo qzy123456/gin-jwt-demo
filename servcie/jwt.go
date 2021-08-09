@@ -14,11 +14,11 @@ import (
 // LoginResult 登录结果结构
 type LoginResult struct {
 	Token string `json:"token"`
-	model.User
+	model.UserNew
 }
 
 // 生成令牌
-func (s *Service) GenerateToken(c *gin.Context, user *model.User) {
+func (s *Service) GenerateToken(c *gin.Context, user *model.UserNew) {
 
 	claims := model.CustomClaims{
 		user.UserId,
@@ -43,8 +43,8 @@ func (s *Service) GenerateToken(c *gin.Context, user *model.User) {
 	log.Println(token)
 
 	data := LoginResult{
-		User:  *user,
-		Token: token,
+		 token,
+		*user,
 	}
 	//登陆成功，返回token，用户数据
 	c.JSON(http.StatusOK, gin.H{

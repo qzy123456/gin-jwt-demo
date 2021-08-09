@@ -9,17 +9,17 @@ func (s *Service) DeleteUserRoleById(id int) bool{
 	return s.dao.DeleteUserRoleById(id)
 }
 //获取所有用户
-func (s *Service) FindAllRole(pageInfo model.Page) (user []model.Role) {
-	var users []model.Role
-	users, err := s.dao.GetRoleByPage(pageInfo)
+func (s *Service) FindAllRole() (user []*model.RoleNew) {
+	var users []*model.RoleNew
+	users, err := s.dao.GetRoleByPage()
 	if err != nil {
 		return nil
 	}
 	return users
 }
 //获取所有用户
-func (s *Service) GetRoleCount(pageInfo model.Page) int64 {
-	return s.dao.GetRoleCount(pageInfo)
+func (s *Service) GetRoleCount() int64 {
+	return s.dao.GetRoleCount()
 }
 //检测用户的账号，密码
 func (s *Service) CheckRoleByName(username string) bool {
@@ -53,4 +53,12 @@ func (s *Service) UpdateRoleById(user model.Role) bool {
 		return true
 	}
 	return false
+}
+
+func (s *Service) DeleteMenuAndRoleId(menu model.RoleMenu)error  {
+	err := s.dao.DeleteMenuAndRoleId(menu)
+	if err != nil {
+		return err
+	}
+	return nil
 }
