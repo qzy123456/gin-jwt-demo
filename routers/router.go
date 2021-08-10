@@ -33,6 +33,7 @@ func InitRouters(srv *servcie.Service) *gin.Engine {
 		user.POST("/deleteById", DeleteById)    //删除一个用户
 		user.POST("/update", UpdateById)        //修改一个用户
 		user.POST("/insertRole", InsertRole)    //给用户分配角色
+		user.POST("/updateStatus", UpdateStatus)    //给用户分配角色
 	}
 	//角色
 	role := r.Group("/role").Use(mid.JWTAuth())

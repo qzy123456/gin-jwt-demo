@@ -7,7 +7,7 @@ type User struct {
 	UserId         int `json:"userId" xorm:"pk user_id autoincr "`
 	Username       string `json:"userName" xorm:"unique"`
 	Password     string `json:"password" xorm:"-"`
-	Enabled      int `json:"enabled" xorm:"enabled"`
+	Enabled      bool `json:"enabled" xorm:"enabled"`
 	CreateTime   string `json:"create" xorm:"create_time"`
 	LastTime     string `json:"last" xorm:"last_time"`
 	Role        Role ` xorm:"extends"`

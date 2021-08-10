@@ -160,3 +160,27 @@ func InsertRole(c *gin.Context) {
 		})
 	}
 }
+//更改用户状态
+func UpdateStatus(c *gin.Context)  {
+	var user  model.UserNew
+	//没有错误
+	if c.BindJSON(&user) == nil {
+		//修改失败
+		if !GlobalService.UpdateStatus(user){
+			c.JSON(http.StatusOK, gin.H{
+				"code":  consts.ERROR_UPDATE_ERROR,
+				"msg":   consts.GetMsg(consts.ERROR_UPDATE_ERROR),
+			})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{
+			"code":  consts.SUCCESS,
+			"msg":   consts.GetMsg(consts.SUCCESS),
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"code": consts.INVALID_PARAMS,
+			"msg":  consts.GetMsg(consts.INVALID_PARAMS),
+		})
+	}
+}

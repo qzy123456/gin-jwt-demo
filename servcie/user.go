@@ -85,3 +85,7 @@ func (s *Service) DelUserRole(id int) error {
 	}
 	return nil
 }
+//改状态
+func (s *Service)UpdateStatus(us model.UserNew) bool {
+	return s.dao.UpdateStatus(us)
+}

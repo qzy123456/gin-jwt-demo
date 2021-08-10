@@ -28,8 +28,6 @@ func (s *Dao) GetUserByPage(pageInfo model.Page) (users []model.User,errs error)
 	err := s.Db.Table(&model.User{}).Join("LEFT", "tbl_user_role", "tbl_user_role.user_id = tbl_user.user_id").
 		Join("LEFT", "tbl_role", "tbl_user_role.role_id = tbl_role.role_id").
 		Where("tbl_user.username like ? ","%"+pageInfo.Query+"%").Limit(pageInfo.PageSize, (pageInfo.PageNum - 1) * pageInfo.PageSize).Find(&user)
-	fmt.Println(err)
-	s.Db.ShowSQL(true)
 	if err!= nil{
 		return nil,err
 	}
@@ -104,4 +102,15 @@ func (s *Dao) DelUserRole(id int) error{
 		return err
 	}
 	return  nil
+}
+//检测登陆的账号密码
+func (s *Dao) UpdateStatus(us model.UserNew) bool {
+	user := new(model.UserNew)
+	user = &us
+	user.LastTime = utils.GetYmds()
+	affected, err := s.Db.Where("user_id = ?", user.UserId).Cols("enabled").Update(user)
+	if err != nil  || affected < 0{
+		return false
+	}
+	return true
 }
