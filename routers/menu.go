@@ -130,4 +130,21 @@ func GiveMenu(c *gin.Context)  {
 		})
 	}
 }
+//查询menu详情
+func GetMenuByMenuId(c *gin.Context)  {
+	var menu  model.Menu
+	//没有错误
+	if c.BindJSON(&menu) == nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code":  consts.SUCCESS,
+			"msg":   consts.GetMsg(consts.SUCCESS),
+			"data": GlobalService.FindMenuByMenuIds(menu.MenuId),
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"code": consts.INVALID_PARAMS,
+			"msg":  consts.GetMsg(consts.INVALID_PARAMS),
+		})
+	}
+}
 

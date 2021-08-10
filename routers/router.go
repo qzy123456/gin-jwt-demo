@@ -52,6 +52,7 @@ func InitRouters(srv *servcie.Service) *gin.Engine {
 		menu.POST("/delete", DeleteMenuById) //删除一个菜单
 		menu.POST("/update", UpdateMenuById)     //修改一个菜单
 		menu.POST("/giveMenu", GiveMenu)     //给角色分配菜单
+		menu.POST("/getMenuById", GetMenuByMenuId)  //根据菜单id 查询
 	}
 	return r
 }
