@@ -16,9 +16,8 @@ func (m *Middleware) ParamVerify() gin.HandlerFunc {
 		err := validate.Struct(params)
 		if err != nil {
 			c.JSON(http.StatusOK, map[string]interface{}{
-				"code": 111,
+				"code": -1,
 				"msg":  "nil " + err.(validator.ValidationErrors)[0].Field(),
-				"data": map[string]interface{}{},
 			})
 			c.Abort()
 			return
