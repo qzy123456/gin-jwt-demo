@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -9,11 +8,9 @@ import (
 func (m *Middleware) CheckMenus() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var path = c.Request.URL.Path
-		fmt.Println(path)
 		//不需要检测的
 		claims := c.MustGet("claims").(*CustomClaims)
 		menus := m.Service.GetAllUserMenus(claims.ID)
-		fmt.Println(menus)
 		var isSet = false
 		for _, value := range menus {
 			//在
