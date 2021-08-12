@@ -7,7 +7,7 @@ import (
 )
 
 //查询所有的当前用户权限的菜单ID
-func FindMenuById( id int)[]model.UserRole  {
+func (s *Service) FindMenuById( id int)[]model.UserRole  {
 	users := make([]model.UserRole, 0)
 	initialize.Xorm().Select("*").Table("tbl_user_role").Join("INNER", "`tbl_role`", "tbl_user_role.role_id= tbl_role.role_id").
 		Join("INNER", "`tbl_role_menu`", "tbl_user_role.role_id = tbl_role_menu.role_id").
@@ -29,7 +29,8 @@ func FindMenus( id int)[]int  {
 }
 //通过菜单id，拼接成递归样式
 func (s *Service) GetAllPerm2(id int)([]model.Tree) {
-	data := FindMenuById(id)
+	data := s.FindMenuById(id)
+
 	var options []model.Tree
 	o := GetAllPerm3(data,0,options)
 	return o
@@ -173,4 +174,16 @@ func GetAllPerm52(data []model.MenuNew,id int,cp *[]int)*[]int {
 		}
 	}
 	return  cp
+}
+
+//返回用户的所有的权限列表
+func (s *Service) GetAllUserMenus(id int) []string  {
+	data := s.FindMenuById(id)
+	fmt.Println(data)
+	return nil
+	var names  = make( []string,0)
+	for _, value := range data {
+		names = append(names,value.Menu.Menuname)
+	}
+	return names
 }

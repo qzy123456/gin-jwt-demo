@@ -14,7 +14,7 @@ func InitRouters(srv *servcie.Service) *gin.Engine {
 	r := gin.Default()
 	//加载中间件
 	mid := middleware.New(GlobalService)
-	//跨域,日志
+	//跨域,日志,错误，检测权限
 	r.Use(mid.Cors(), mid.OperationRecord(), mid.SetUp())
 
 	//配置加载静态文件夹，用于显示远程图片
@@ -24,7 +24,7 @@ func InitRouters(srv *servcie.Service) *gin.Engine {
 	r.POST("/file-upload", Upload)   //上传文件
 	r.POST("/file-uploads", Uploads) //批量上传文件
 	//用户
-	user := r.Group("/user").Use(mid.JWTAuth())
+	user := r.Group("/user").Use(mid.JWTAuth(),mid.CheckMenus(),)
 	{
 		user.GET("/dataByTime", GetDataByTime)  //测试token是否正常
 		user.POST("/getMenuById", FindMenuById) //根据用户id获取对应的路由tree
@@ -37,7 +37,7 @@ func InitRouters(srv *servcie.Service) *gin.Engine {
 		user.POST("/updatePass", UpdatePass)     //更改密码
 	}
 	//角色
-	role := r.Group("/role").Use(mid.JWTAuth())
+	role := r.Group("/role").Use(mid.JWTAuth(),mid.CheckMenus(),)
 	{
 		role.POST("/all", FindAllRole)   //所有用户
 		role.POST("/save", SaveRole)     //插入一个角色
@@ -47,7 +47,7 @@ func InitRouters(srv *servcie.Service) *gin.Engine {
 		role.POST("/deleteMenuAndRoleId", DeleteMenuAndRoleId)     //根据roleid，返回所有的menu信息
 	}
 	//菜单
-	menu := r.Group("/menu").Use(mid.JWTAuth())
+	menu := r.Group("/menu").Use(mid.JWTAuth(),mid.CheckMenus(),)
 	{
 		menu.POST("/all", FindAllMenu)   //所有菜单
 		menu.POST("/save", SaveMenu)     //插入一个菜单
@@ -57,7 +57,7 @@ func InitRouters(srv *servcie.Service) *gin.Engine {
 		menu.POST("/getMenuById", GetMenuByMenuId)  //根据菜单id 查询
 	}
 	//系统信息
-	server := r.Group("/server").Use(mid.JWTAuth())
+	server := r.Group("/server").Use(mid.JWTAuth(),mid.CheckMenus(),)
 	{
 		server.POST("/server", GetServer)   //所有菜单
 		server.POST("/weather", Weather)   //天气
