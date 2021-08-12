@@ -89,3 +89,8 @@ func (s *Service) DelUserRole(id int) error {
 func (s *Service)UpdateStatus(us model.UserNew) bool {
 	return s.dao.UpdateStatus(us)
 }
+
+//改密码
+func (s *Service)UpdatePass(user model.UpdatePass) error  {
+	return s.dao.UpdatePass(user)
+}

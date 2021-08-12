@@ -29,3 +29,8 @@ func (s *Service)DeleteMenuById(id int)error  {
 func (s *Service)UpdateMenuById(menu model.Menu)error  {
 	return s.dao.UpdateMenuById(menu)
 }
+//通过菜单id，拼接成递归样式
+func (s *Service) GetAllParentIds(id int)interface{} {
+return 	s.dao.GetAllParentIds(id)
+
+}

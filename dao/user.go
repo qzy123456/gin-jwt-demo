@@ -2,13 +2,14 @@ package dao
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 	"jwtDemo/model"
 	"jwtDemo/utils"
 )
 //检测登陆的账号密码
 func (s *Dao) CheckLogin(loginReq model.LoginReq) *model.UserNew  {
 	user := new(model.UserNew)
-	has, err := s.Db.Where("username=?", loginReq.Username).Where("password=?", loginReq.Password).Get(user)
+	has, err := s.Db.Where("username=?", loginReq.Username).Where("password=?", loginReq.Password).Where("enabled=?", 1).Get(user)
 	if !has || err!= nil{
 		return nil
 	}
@@ -113,4 +114,29 @@ func (s *Dao) UpdateStatus(us model.UserNew) bool {
 		return false
 	}
 	return true
+}
+
+//修改密码
+func (s *Dao)UpdatePass(user model.UpdatePass) error  {
+	//先查询，用户id对应的密码是否匹配
+	use := new(model.UserNew)
+	has, err := s.Db.Where("username=?", user.UserName).Get(use)
+	if !has || err!= nil{
+		return errors.New("用户查不到")
+	}
+    if use.Password != user.Password{
+		return errors.New("密码不匹配")
+	}
+	if user.NewPassword == user.Password{
+		return errors.New("新密码不能等于旧密码")
+	}
+	uses := new(model.UserNew)
+	uses.Username = user.UserName
+	uses.Password = user.NewPassword
+	//更改密码
+	_,err1 := s.Db.Where("username = ?", user.UserName).Cols("password").Update(uses)
+	if err1 != nil  {
+		return err1
+	}
+	return nil
 }

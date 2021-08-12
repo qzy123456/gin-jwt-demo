@@ -10,6 +10,7 @@ type User struct {
 	Enabled      bool `json:"enabled" xorm:"enabled"`
 	CreateTime   string `json:"create" xorm:"create_time"`
 	LastTime     string `json:"last" xorm:"last_time"`
+	RoleName     string  `json:"role_name" xorm:"role_name"`
 	Role        Role ` xorm:"extends"`
 	UserRole    UserRoleNew ` xorm:"extends"`
 }
@@ -32,6 +33,12 @@ func (UserNew) TableName()string  {
 type LoginReq struct {
 	Username string `json:"username"`
 	Password   string `json:"password"`
+}
+// UpdatePass 更改密码的请求体
+type UpdatePass struct {
+	UserName  string `json:"userName"`
+	Password   string `json:"password"`
+	NewPassword   string `json:"new_password"`
 }
 
 // 载荷，可以加一些自己需要的信息

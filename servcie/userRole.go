@@ -9,7 +9,7 @@ import (
 //查询所有的当前用户权限的菜单ID
 func FindMenuById( id int)[]model.UserRole  {
 	users := make([]model.UserRole, 0)
-	initialize.Xorm().Select("*").Table("tbl_user_role").Join("INNER", "`tbl_role`", "tbl_user_role.user_id= tbl_role.role_id").
+	initialize.Xorm().Select("*").Table("tbl_user_role").Join("INNER", "`tbl_role`", "tbl_user_role.role_id= tbl_role.role_id").
 		Join("INNER", "`tbl_role_menu`", "tbl_user_role.role_id = tbl_role_menu.role_id").
 		Join("INNER", "`tbl_menu`", "tbl_role_menu.menu_id = tbl_menu.menu_id").
 		Where("tbl_user_role.user_id = ?",id).
@@ -119,10 +119,10 @@ func FindMenuByRoleId( id int)[]model.UserRole  {
 	return users
 }
 //通过菜单id，拼接成递归样式
-func (s *Service) GetAllPerms()([]model.MenuNew) {
+func (s *Service) GetAllPerms(id int)([]model.MenuNew) {
 	data := s.FindMenuByRoleIds()
 	var options []model.MenuNew
-	o := GetAllPerm5(data,0,options)
+	o := GetAllPerm5(data,id,options)
 	return o
 }
 //查询所有的当前用户权限的菜单ID
@@ -151,4 +151,26 @@ func GetAllPerm5(data []model.MenuNew,id int,cp []model.MenuNew) []model.MenuNew
 //查询当前menu详情
 func (s *Service) FindMenuByMenuIds( id int)model.Menu {
 	return s.dao.FindMenuByMenuIds(id)
+}
+
+//通过菜单id，拼接成递归样式
+func (s *Service) GetAllPerms2(id int)*[]int {
+
+	data := s.FindMenuByRoleIds()
+	var options = make([]int,0)
+
+	 o := GetAllPerm52(data,id,&options)
+	return o
+}
+
+//通过菜单id，拼接成递归样式(这种最优，只需要查询一次数据库)
+func GetAllPerm52(data []model.MenuNew,id int,cp *[]int)*[]int {
+	for index, value := range data {
+		if value.MenuId == id{
+			data = append(data[:index], data[index+1:]...)
+			*cp = append(*cp,id)
+			GetAllPerm52(data,value.ParentId,cp)
+		}
+	}
+	return  cp
 }

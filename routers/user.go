@@ -184,3 +184,29 @@ func UpdateStatus(c *gin.Context)  {
 		})
 	}
 }
+
+
+//更改用户密码
+func UpdatePass(c *gin.Context)  {
+	var user model.UpdatePass
+	//没有错误
+	if c.BindJSON(&user) == nil {
+		//修改失败
+		if err := GlobalService.UpdatePass(user);err != nil{
+			c.JSON(http.StatusOK, gin.H{
+				"code":  consts.ERROR_UPDATE_ERROR,
+				"msg":   err.Error(),
+			})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{
+			"code":  consts.SUCCESS,
+			"msg":   consts.GetMsg(consts.SUCCESS),
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"code": consts.INVALID_PARAMS,
+			"msg":  consts.GetMsg(consts.INVALID_PARAMS),
+		})
+	}
+}

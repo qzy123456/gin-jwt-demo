@@ -34,6 +34,7 @@ func InitRouters(srv *servcie.Service) *gin.Engine {
 		user.POST("/update", UpdateById)        //修改一个用户
 		user.POST("/insertRole", InsertRole)    //给用户分配角色
 		user.POST("/updateStatus", UpdateStatus)    //给用户分配角色
+		user.POST("/updatePass", UpdatePass)     //更改密码
 	}
 	//角色
 	role := r.Group("/role").Use(mid.JWTAuth())
@@ -54,6 +55,12 @@ func InitRouters(srv *servcie.Service) *gin.Engine {
 		menu.POST("/update", UpdateMenuById)     //修改一个菜单
 		menu.POST("/giveMenu", GiveMenu)     //给角色分配菜单
 		menu.POST("/getMenuById", GetMenuByMenuId)  //根据菜单id 查询
+	}
+	//系统信息
+	server := r.Group("/server").Use(mid.JWTAuth())
+	{
+		server.POST("/server", GetServer)   //所有菜单
+		server.POST("/weather", Weather)   //天气
 	}
 	return r
 }

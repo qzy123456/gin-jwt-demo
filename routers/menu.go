@@ -13,7 +13,7 @@ func FindAllMenu(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"code":  consts.SUCCESS,
 			"msg":   consts.GetMsg(consts.SUCCESS),
-			"data":  GlobalService.GetAllPerms(),
+			"data":  GlobalService.GetAllPerms(0),
 		})
 
 }
@@ -135,10 +135,13 @@ func GetMenuByMenuId(c *gin.Context)  {
 	var menu  model.Menu
 	//没有错误
 	if c.BindJSON(&menu) == nil {
+		menuInfo := GlobalService.FindMenuByMenuIds(menu.MenuId)
+
 		c.JSON(http.StatusOK, gin.H{
 			"code":  consts.SUCCESS,
 			"msg":   consts.GetMsg(consts.SUCCESS),
-			"data": GlobalService.FindMenuByMenuIds(menu.MenuId),
+			"data":   menuInfo,
+			"menu_ids" : GlobalService.GetAllPerms2(menuInfo.ParentId),
 		})
 	} else {
 		c.JSON(http.StatusOK, gin.H{
