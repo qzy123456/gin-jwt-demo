@@ -15,7 +15,7 @@ func InitRouters(srv *servcie.Service) *gin.Engine {
 	//加载中间件
 	mid := middleware.New(GlobalService)
 	//跨域,日志,错误，检测权限
-	r.Use(mid.Cors(), mid.OperationRecord(), mid.SetUp())
+	r.Use(mid.OperationRecord(),mid.Cors(), mid.SetUp())
 
 	//配置加载静态文件夹，用于显示远程图片
 	r.StaticFS("/upload", http.Dir("./upload"))
@@ -61,6 +61,11 @@ func InitRouters(srv *servcie.Service) *gin.Engine {
 	{
 		server.POST("/server", GetServer)   //所有菜单
 		server.POST("/weather", Weather)   //天气
+	}
+	//日志信息
+	log := r.Group("/log").Use(mid.JWTAuth(),mid.CheckMenus(),)
+	{
+		log.POST("/all", GetLogs)   //分页获取所有的日志
 	}
 	return r
 }

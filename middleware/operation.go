@@ -2,18 +2,19 @@ package middleware
 
 import (
 	"bytes"
-	"fmt"
-	"jwtDemo/model"
-	"time"
-
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
+	"io/ioutil"
+	"jwtDemo/model"
+	"jwtDemo/utils"
+	"net/http"
+	"time"
 )
 
 func (m *Middleware) OperationRecord() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var (
-			body   []byte
+			body []byte
 		)
 		writer := ResponseBodyWriter{
 			ResponseWriter: c.Writer,
@@ -21,23 +22,28 @@ func (m *Middleware) OperationRecord() gin.HandlerFunc {
 		}
 		c.Writer = writer
 		startTime := time.Now()
-		//处理请求
-		c.Next()
 		// 执行时间
 		latency := time.Now().Sub(startTime)
-		//存储到数据库，忽略error
-		if err:=m.Service.SaveOperation(model.Operation{
-			Ip:c.ClientIP(),
-			Method:c.Request.Method,
-			Path :c.Request.URL.Path,
-			Body : string(body),
-			Response: writer.body.String(),
-			//CreateTime :time.Now().Unix(),
-		});err!=nil{
-			fmt.Println(err)
+		var err error
+		body, err = ioutil.ReadAll(c.Request.Body)
+		if err == nil {
+			c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(body))
 		}
+		c.Next()
 		//不在不需要打日志的列表内
 		if _, ok := m.NoLoginAction[c.Request.URL.Path]; !ok {
+			//存储到数据库，忽略error
+			if c.Request.Method == http.MethodPost {
+				m.Service.SaveOperation(model.Operation{
+					Ip:         c.ClientIP(),
+					Method:     c.Request.Method,
+					Path:       c.Request.URL.Path,
+					Body:       string(body),
+					Response:   writer.body.String(),
+					CreateTime: utils.GetYmds(),
+				})
+			}
+
 			// 日志格式
 			m.Service.RequestLogger.WithFields(logrus.Fields{
 				"ip":            c.ClientIP(), //请求ip

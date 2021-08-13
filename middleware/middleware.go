@@ -26,7 +26,7 @@ func InitNoLoginAction() map[string]bool  {
 	mid := make(map[string]bool)
 	mid["/login"] = true
 	mid["/server/weather"] = true
-	//mid["/file-upload"] = true
+	mid["/log/all"] = true
     return mid
 }
 

@@ -10,5 +10,5 @@ type Operation struct {
 	Path string
 	Body string
 	Response string
-	CreateTime int64 `xorm:"updated createTime"`
+	CreateTime string `xorm:"updated createTime"`
 }
