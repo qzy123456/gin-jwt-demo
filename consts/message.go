@@ -1,6 +1,7 @@
 package consts
 
 var MsgFlags = map[int]string{
+	FORBIDDEN:                       "没有权限!",
 	SUCCESS:                         "ok",
 	ERROR:                           "fail",
 	INVALID_PARAMS:                  "请求参数错误",

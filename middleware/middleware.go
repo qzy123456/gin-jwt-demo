@@ -35,5 +35,6 @@ func InitNoCheckAction() map[string]bool  {
 	mid := make(map[string]bool)
 	mid["/login"] = true
 	mid["/server/weather"] = true
+	mid["/user/getMenuById"] = true
 	return mid
 }

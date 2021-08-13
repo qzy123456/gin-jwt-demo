@@ -179,11 +179,11 @@ func GetAllPerm52(data []model.MenuNew,id int,cp *[]int)*[]int {
 //返回用户的所有的权限列表
 func (s *Service) GetAllUserMenus(id int) []string  {
 	data := s.FindMenuById(id)
-	fmt.Println(data)
-	return nil
 	var names  = make( []string,0)
 	for _, value := range data {
-		names = append(names,value.Menu.Menuname)
+		if value.Menu.MenuUrl != ""{
+			names = append(names,value.Menu.MenuUrl)
+		}
 	}
 	return names
 }
