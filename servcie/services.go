@@ -5,6 +5,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"jwtDemo/conf"
 	"jwtDemo/dao"
+	cache "jwtDemo/library/cache/redis"
 	"jwtDemo/library/xlog"
 )
 
@@ -15,6 +16,7 @@ type Service struct {
 	RequestLogger *logrus.Logger
 	HttpLogger    *logrus.Logger
 	Jwt           string
+	UsersCache    *cache.Pool
 }
 
 func New(c *conf.Config) (s *Service) {
@@ -24,6 +26,7 @@ func New(c *conf.Config) (s *Service) {
 		log:           xlog.Init(c.Log, "business"),
 		RequestLogger: xlog.Init(c.Log, "request"),
 		HttpLogger:    xlog.Init(c.Log, "http"),
+		UsersCache:    cache.NewPool(c.Redis.UserCluster),
 	}
 	return
 }

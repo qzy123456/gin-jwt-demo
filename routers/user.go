@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"jwtDemo/consts"
 	"jwtDemo/middleware"
@@ -90,7 +91,10 @@ func DeleteById(c *gin.Context) {
 			})
 			return
 		}
+		//删除用户对应的权限
 		GlobalService.DelUserRole(user.UserId)
+		//删除token
+		GlobalService.DelToken(fmt.Sprintf("%s%d",model.TokenKey,user.UserId))
 		c.JSON(http.StatusOK, gin.H{
 			"code":  consts.SUCCESS,
 			"msg":   consts.GetMsg(consts.SUCCESS),
@@ -123,6 +127,8 @@ func UpdateById(c *gin.Context) {
 			})
 			return
 		}
+		//删除用户token
+		GlobalService.DelToken(fmt.Sprintf("%s%d",model.TokenKey,user.UserId))
 		c.JSON(http.StatusOK, gin.H{
 			"code":  consts.SUCCESS,
 			"msg":   consts.GetMsg(consts.SUCCESS),
@@ -149,6 +155,9 @@ func InsertRole(c *gin.Context) {
 			})
 			return
 		}
+		//删除用户token
+		GlobalService.DelToken(fmt.Sprintf("%s%d",model.TokenKey,user.UserId))
+
 		c.JSON(http.StatusOK, gin.H{
 			"code":  consts.SUCCESS,
 			"msg":   consts.GetMsg(consts.SUCCESS),
@@ -199,6 +208,9 @@ func UpdatePass(c *gin.Context)  {
 			})
 			return
 		}
+		//删除用户token
+		GlobalService.DelToken(fmt.Sprintf("%s%d",model.TokenKey,user.UserId))
+
 		c.JSON(http.StatusOK, gin.H{
 			"code":  consts.SUCCESS,
 			"msg":   consts.GetMsg(consts.SUCCESS),

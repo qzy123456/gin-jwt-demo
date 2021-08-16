@@ -47,13 +47,6 @@ func NewPool(conf *Config) *Pool {
 						return nil, err
 					}
 				}
-				if conf.Db != 0 {
-					if _, err := c.Do("SELECT", conf.Db); err != nil {
-						c.Close()
-						log.Fatalf("redis.Setup, fail to select db: %v", err)
-						return nil, err
-					}
-				}
 				return c, err
 			},
 			TestOnBorrow: func(c redis.Conn, t time.Time) error {

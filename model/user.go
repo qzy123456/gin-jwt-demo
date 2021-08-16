@@ -36,6 +36,7 @@ type LoginReq struct {
 }
 // UpdatePass 更改密码的请求体
 type UpdatePass struct {
+	UserId         int `json:"userId"`
 	UserName  string `json:"userName"`
 	Password   string `json:"password"`
 	NewPassword   string `json:"new_password"`

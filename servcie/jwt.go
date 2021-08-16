@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 	"jwtDemo/conf"
 	"jwtDemo/model"
-	"log"
 	"net/http"
 	"time"
 )
@@ -31,7 +31,6 @@ func (s *Service) GenerateToken(c *gin.Context, user *model.UserNew) {
 	}
 
  	token, err := s.CreateToken(claims)
-	fmt.Println(err)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": -1,
@@ -39,8 +38,14 @@ func (s *Service) GenerateToken(c *gin.Context, user *model.UserNew) {
 		})
 		return
 	}
-
-	log.Println(token)
+    //登陆成功，设置用户token
+	_,errs :=s.UsersCache.SetString(fmt.Sprintf("%s%d",model.TokenKey,claims.ID),token,864000)
+	if errs != nil {
+		s.log.WithFields(logrus.Fields{
+			"cacheKey":               model.TokenKey+string(claims.ID),
+			"error":                  err.Error(),
+		}).Error("SetUserTokenCache  err")
+	}
 
 	data := LoginResult{
 		 token,

@@ -19,14 +19,14 @@ func Login(c *gin.Context) {
 			GlobalService.GenerateToken(c, user)
 		} else {
 			c.JSON(http.StatusOK, gin.H{
-				"code": consts.INVALID_PARAMS,
-				"msg":  consts.GetMsg(consts.INVALID_PARAMS),
+				"code": consts.ERROR_NOT_FOUND_USER,
+				"msg":  consts.GetMsg(consts.ERROR_NOT_FOUND_USER),
 			})
 		}
 	} else {
 		c.JSON(http.StatusOK, gin.H{
 			"code": consts.INVALID_PARAMS,
-			"msg":  consts.GetMsg(consts.INVALID_PARAMS),
+			"msg":  c.BindJSON(&loginReq).Error(),
 		})
 	}
 }

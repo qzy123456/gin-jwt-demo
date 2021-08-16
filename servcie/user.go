@@ -94,3 +94,7 @@ func (s *Service)UpdateStatus(us model.UserNew) bool {
 func (s *Service)UpdatePass(user model.UpdatePass) error  {
 	return s.dao.UpdatePass(user)
 }
+// 删除Token
+func (m *Service) DelToken(tokenString string) (bool, error) {
+	return m.UsersCache.Delete(tokenString)
+}

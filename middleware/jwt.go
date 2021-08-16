@@ -2,9 +2,10 @@ package middleware
 
 import (
 	"errors"
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"log"
+	"jwtDemo/model"
 	"net/http"
 )
 // 一些常量
@@ -36,8 +37,6 @@ func (m *Middleware) JWTAuth() gin.HandlerFunc {
 			return
 		}
 
-		log.Print("get token: ", token)
-
 		// parseToken 解析token包含的信息
 		claims, err := m.ParseToken(token)
 		if err != nil {
@@ -52,6 +51,19 @@ func (m *Middleware) JWTAuth() gin.HandlerFunc {
 			c.JSON(http.StatusOK, gin.H{
 				"status": -1,
 				"msg":    err.Error(),
+			})
+			c.Abort()
+			return
+		}
+		//判断token是否一致
+		redisToken,_ := m.Service.UsersCache.GetString(fmt.Sprintf("%s%d",model.TokenKey,claims.ID))
+		fmt.Println(redisToken)
+		fmt.Println(fmt.Sprintf("%s%d",model.TokenKey,claims.ID))
+
+		if redisToken != token{
+			c.JSON(http.StatusOK, gin.H{
+				"status": -1,
+				"msg":    "token不存在",
 			})
 			c.Abort()
 			return

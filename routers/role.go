@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"jwtDemo/consts"
 	"jwtDemo/model"
@@ -67,6 +68,8 @@ func DeleteRoleById(c *gin.Context) {
 
 		//删除完角色，要删除角色的menu
 		GlobalService.DelUserMenuByRoleId(user.RoleId)
+		//删除token
+		GlobalService.DelToken(fmt.Sprintf("%s%d",model.TokenKey,user.UserId))
 
 		c.JSON(http.StatusOK, gin.H{
 			"code":  consts.SUCCESS,
