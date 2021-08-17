@@ -1,0 +1,46 @@
+{
+  "app": {
+    "GlobalCachePrefix": "douyin_lite:"
+  },
+  "server": {
+    "RunMode": "release",
+    "Address": "127.0.0.1",
+    "HttpPort": "8888"
+  },
+  "log": {
+    "Path": "runtime/logs/",
+    "FilePrefix": "log.%Y%m%d",
+    "RotationTime": 86400
+  },
+  "db": {
+    "Debug": true,
+    "MaxId":10,
+    "MaxOpen": 20,
+    "Dsn": [
+      "root:root@tcp(mysql:3306)/db_rbac?charset=utf8",
+      "root:root@tcp(mysql:3306)/db_rbac?charset=utf8"
+    ]
+  },
+  "redis": {
+    "Global": {
+      "Host": "redis:6379",
+      "Password": "",
+      "Db": 15,
+      "MaxIdle": 30,
+      "MaxActive": 30,
+      "IdleTimeout": 300
+    },
+    "UserCluster": {
+      "Host": "redis:6379",
+      "Password": "",
+      "Db": 15,
+      "MaxIdle": 30,
+      "MaxActive": 30,
+      "IdleTimeout": 300
+    }
+  },
+  "jwt": {
+    "SigningKey" : "chaoyang.qi"
+  }
+}
+
