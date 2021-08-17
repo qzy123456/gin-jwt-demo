@@ -34,12 +34,14 @@ func (m *Middleware) OperationRecord() gin.HandlerFunc {
 		if _, ok := m.NoLoginAction[c.Request.URL.Path]; !ok {
 			//存储到数据库，忽略error
 			if c.Request.Method == http.MethodPost {
+				claims := c.MustGet("claims").(*CustomClaims)
 				m.Service.SaveOperation(model.Operation{
 					Ip:         c.ClientIP(),
 					Method:     c.Request.Method,
 					Path:       c.Request.URL.Path,
 					Body:       string(body),
 					Response:   writer.body.String(),
+					User:       claims.Name,
 					CreateTime: utils.GetYmds(),
 				})
 			}

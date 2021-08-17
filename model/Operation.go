@@ -10,5 +10,6 @@ type Operation struct {
 	Path string
 	Body string
 	Response string
+	User string
 	CreateTime string `xorm:"updated createTime"`
 }
