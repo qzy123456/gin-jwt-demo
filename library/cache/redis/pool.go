@@ -34,7 +34,7 @@ func NewPool(conf *Config) *Pool {
 			MaxActive:   conf.MaxActive,
 			IdleTimeout: time.Duration(conf.IdleTimeout) * time.Second,
 			Dial: func() (redis.Conn, error) {
-				// 拨号是应用程序提供的用于创建和配置连接的功能。 从Dial返回的连接不得处于特殊状态（已订阅pubsub通道，事务已开始，...）
+				// 拨号是应用程序提供的用于创建和配置连接的功能。
 				c, err := redis.Dial("tcp", conf.Host)
 				if err != nil {
 					log.Fatalf("redis.Setup, fail to dial: %v", err)
