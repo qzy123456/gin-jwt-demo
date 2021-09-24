@@ -5,13 +5,21 @@ import (
 	"flag"
 	"fmt"
 	"github.com/fvbock/endless"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"jwtDemo/conf"
+	_ "jwtDemo/docs"
 	"jwtDemo/routers"
 	"jwtDemo/servcie"
 	"log"
 	"syscall"
 )
 
+// @title API文档
+// @version 1.0.0
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name token
 func main() {
 	flag.Parse()
 	// 读取配置
@@ -25,6 +33,7 @@ func main() {
 		panic(err)
 	}
 	r := routers.InitRouters(svc)
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	/*
 	启动服务器
 	*/

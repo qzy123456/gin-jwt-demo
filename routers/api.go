@@ -9,7 +9,13 @@ import (
 	"net/http"
 )
 
-// Login 登录
+// @Tags 用户
+// @Summary 用户登陆
+// @Description 用户登陆
+// @Produce  json
+// @Param user body model.LoginReq  true "user"
+// @Success 200 {object} object gin.Context.JSON
+// @Router /login [post]
 func Login(c *gin.Context) {
 	var loginReq model.LoginReq
 	if c.BindJSON(&loginReq) == nil {
